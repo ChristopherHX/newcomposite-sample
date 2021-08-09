@@ -4,6 +4,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-      with:
-        path: testa
-    - uses: ./testa/.github/comp1
+    - uses: ./.github/comp1
