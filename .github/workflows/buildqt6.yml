@@ -40,35 +40,40 @@ jobs:
           core.exportVariable('CXX', 'wclang++');
           core.exportVariable('LD_LIBRARY_PATH', '/opt/llvm/lib');
     - uses: ./.github/build-qtbase
+    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6
     - uses: actions/upload-artifact@v2
       with:
         name: qtbase
-        path: /opt/qt6
+        path: /opt/qt6.tar.xz
     - uses: ./.github/build-qtmodule
       with:
         module: qtshadertools
+    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6
     - uses: actions/upload-artifact@v2
       with:
         name: qtbase-qtshadertools
-        path: /opt/qt6
+        path: /opt/qt6.tar.xz
     - uses: ./.github/build-qtmodule
       with:
         module: qtdeclarative
+    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6
     - uses: actions/upload-artifact@v2
       with:
         name: qtbase-qtshadertools-qtdeclarative
-        path: /opt/qt6
+        path: /opt/qt6.tar.xz
     - uses: ./.github/build-qtmodule
       with:
         module: qtwebchannel
+    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6
     - uses: actions/upload-artifact@v2
       with:
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel
-        path: /opt/qt6
+        path: /opt/qt6.tar.xz
     - uses: ./.github/build-qtmodule
       with:
         module: qtwebengine
+    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6
     - uses: actions/upload-artifact@v2
       with:
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtwebengine
-        path: /opt/qt6
+        path: /opt/qt6.tar.xz
