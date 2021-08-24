@@ -5,12 +5,13 @@ inputs:
     default: "6.2"
   minor:
     default: "0-beta3"
-  dest:
-    default: ${{ github.workspace }}
+  # dest:
+  #   default: ${{ github.workspace }}
 runs:
   using: composite
   steps:
   - uses: ./.github/download-extract-tar
     with:
       url: https://download.qt.io/${{ (contains(inputs.minor, 'alpha') || contains(inputs.minor, 'beta')) && 'development' || 'official' }}_releases/qt/${{ inputs.major }}/${{ inputs.major }}.${{ inputs.minor }}/submodules/${{ inputs.module }}-everywhere-src-${{ inputs.major }}.${{ inputs.minor }}.tar.xz 
-      dest: ${{ inputs.dest }}/${{ inputs.module }}
+      dest: ${{ inputs.module }}
+#${{ inputs.dest }}/
