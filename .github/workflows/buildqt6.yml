@@ -36,6 +36,9 @@ jobs:
           core.addPath('/opt/cmake/bin');
           core.addPath('/opt/ninja');
           core.addPath(path.join(process.cwd(), '.github/helper'));
+          core.exportVariable('CC', 'wclang');
+          core.exportVariable('CXX', 'wclang++');
+          core.exportVariable('LD_LIBRARY_PATH', '/opt/llvm/lib');
     - uses: ./.github/build-qtbase
     - uses: actions/upload-artifact@v2
       with:
