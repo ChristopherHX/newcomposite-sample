@@ -31,6 +31,7 @@ jobs:
       with:
         github-token: which?
         script: |
+          var path = require('path');
           core.addPath('/opt/llvm/bin');
           core.addPath('/opt/cmake/bin');
           core.addPath('/opt/ninja');
