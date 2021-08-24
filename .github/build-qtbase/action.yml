@@ -1,7 +1,7 @@
 runs:
   using: composite
   steps:
-  - uses: ./github/get-qt-source
+  - uses: ./.github/get-qt-source
   - name: Configure Qt
     run: ./qtbase/configure -prefix /opt/qt6 -- -B build-qtbase
   - name: Build Qt

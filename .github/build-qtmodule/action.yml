@@ -3,7 +3,7 @@ inputs:
 runs:
   using: composite
   steps:
-  - uses: ./github/get-qt-source
+  - uses: ./.github/get-qt-source
       with:
         module: ${{ inputs.module }}
   - name: Configure Qt
