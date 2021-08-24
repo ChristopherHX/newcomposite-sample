@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ubuntu:16.04
     steps:
+    - uses: actions/checkout@v2
     - name: Update apt index
       run: apt-get update
     - name: Install Dependencies
