@@ -1,0 +1,2 @@
+#!/bin/bash
+clang -Wno-unused-command-line-argument -fuse-ld=lld -I/qt6/helper/include "$@"

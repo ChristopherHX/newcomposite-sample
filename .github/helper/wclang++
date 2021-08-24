@@ -1,0 +1,2 @@
+#!/bin/bash
+clang++ -Wno-unused-command-line-argument -Wno-unknown-warning-option -fuse-ld=lld -stdlib=libc++ -I/qt6/helper/include "${@/-static-libstdc++}"

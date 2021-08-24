@@ -1,0 +1,16 @@
+inputs:
+  url:
+    description: Url
+  format:
+    description: Extension xz or gz
+    default: xz
+  strip-components:
+    description: Strip the central directory
+    default: 1
+  dest:
+    description: Destination directory
+runs:
+  using: composite
+  steps:
+  - run: curl -L ${{ inputs.url }} | tar -x${{ inputs.format == 'xz' && 'J' || inputs.format == 'gz' && 'z' }} --strip-components ${{ inputs.strip-components }} ${{ inputs.dest && format('-C {0}', inputs.dest) }}
+    shell: bash
