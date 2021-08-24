@@ -22,6 +22,7 @@ jobs:
     - name: Install ninja
       run: |
         curl -L -O https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip
+        mkdir -p /opt/ninja
         unzip ninja-linux -d /opt/ninja
     - uses: actions/setup-node@v2
       with:

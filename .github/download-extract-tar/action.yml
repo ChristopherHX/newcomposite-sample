@@ -9,8 +9,10 @@ inputs:
     default: 1
   dest:
     description: Destination directory
+    default: ${{ github.workspace }}
 runs:
   using: composite
   steps:
+  - run: mkdir -p ${{ inputs.dest }}
   - run: curl -L ${{ inputs.url }} | tar -x${{ inputs.format == 'xz' && 'J' || inputs.format == 'gz' && 'z' }} --strip-components ${{ inputs.strip-components }} ${{ inputs.dest && format('-C {0}', inputs.dest) }}
     shell: bash
