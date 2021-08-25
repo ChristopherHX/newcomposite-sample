@@ -99,7 +99,7 @@ jobs:
         git clone https://github.com/llvm/llvm-project.git llvm -b release/12.x --depth 1
         mkdir -p libcxx64-build
         cd libcxx64-build
-        cmake ../llvm/llvm -DLLVM_ENABLE_PROJECTS="libcxx;libcxxabi" -DCMAKE_BUILD_TYPE=Release
+        cmake ../llvm/llvm -DLLVM_ENABLE_PROJECTS="libcxx;libcxxabi" -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_LIBCXX=ON
         make -j8 cxx cxxabi
         make install
     - run: tar -cJf /opt/libcxx64.tar.xz -C libcxx64-build .
