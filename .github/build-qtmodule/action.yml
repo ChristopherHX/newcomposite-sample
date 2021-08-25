@@ -8,7 +8,7 @@ runs:
     with:
       module: ${{ inputs.module }}
   - name: Configure Qt
-    run: /opt/qt6/bin/qt-configure-module -prefix /opt/qt6 ${{ inputs.module }} -- -B build-${{ inputs.module }}
+    run: /opt/qt6/bin/qt-configure-module ${{ inputs.module }} -- -B build-${{ inputs.module }}
     shell: bash
   - name: Build Qt
     run: cmake --build build-${{ inputs.module }} --parallel
