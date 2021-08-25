@@ -2,6 +2,7 @@ name: build-qt6
 on: push
 jobs:
   buildqt6:
+    if: 'false'
     runs-on: ubuntu-latest
     container: ubuntu:16.04
     steps:
@@ -80,10 +81,14 @@ jobs:
   buildqt6-webengine:
     runs-on: ubuntu-latest
     container: ubuntu:16.04
-    needs: buildqt6
+    #needs: buildqt6
     steps:
-    - uses: actions/download-artifact@v2
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
       with:
+        workflow: build-qt6
+        workflowConclusion: ''
+        run_number: 20
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
     - run: mkdir -p /opt/qt6 && tar -xJf $PWD/qt6.tar.xz -C /opt/qt6
     - uses: actions/checkout@v2
