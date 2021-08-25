@@ -87,9 +87,10 @@ jobs:
       uses: dawidd6/action-download-artifact@v2
       with:
         workflow: build-qt6
-        workflow_conclusion: ''
-        run_number: 20
-        branch: qt6
+        workflow_conclusion: 'completed'
+        commit: e85a44dcf8c06b7cb006a37d7a62b7998c5437bf
+        #run_number: 20
+        #branch: qt6
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
     - run: mkdir -p /opt/qt6 && tar -xJf $PWD/qt6.tar.xz -C /opt/qt6
     - uses: actions/checkout@v2
