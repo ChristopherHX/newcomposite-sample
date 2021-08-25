@@ -118,6 +118,10 @@ jobs:
       with:
         name: openssl
         path: /opt/openssl.tar.xz
+    - uses: actions/github-script@v4
+      with:
+        github-token: which?
+        script: core.exportVariable('BUILT_LIBCXX', 'true');
     - uses: ./.github/build-qtbase
     - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
     - uses: actions/upload-artifact@v2
