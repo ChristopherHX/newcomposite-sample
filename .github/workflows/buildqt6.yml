@@ -89,6 +89,7 @@ jobs:
         workflow: build-qt6
         workflow_conclusion: ''
         run_number: 20
+        branch: qt6
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
     - run: mkdir -p /opt/qt6 && tar -xJf $PWD/qt6.tar.xz -C /opt/qt6
     - uses: actions/checkout@v2
