@@ -1,9 +1,14 @@
+inputs:
+  qt-configure:
+    description: Additional at Configure Parameters
+  cmake-configure:
+    description: Additional cmake Configure Parameters
 runs:
   using: composite
   steps:
   - uses: ./.github/get-qt-source
   - name: Configure Qt
-    run: ./qtbase/configure -prefix /opt/qt6 -- -B build-qtbase
+    run: ./qtbase/configure -prefix /opt/qt6 -qt-libpng${{ inputs.qt-configure && format(' {0}', inputs.qt-configure )}} -- -B build-qtbase${{ inputs.cmake-configure && format(' {0}', inputs.cmake-configure )}}
     shell: bash
   - name: Build Qt
     run: cmake --build build-qtbase --parallel
