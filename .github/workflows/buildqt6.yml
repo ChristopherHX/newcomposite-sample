@@ -71,9 +71,17 @@ jobs:
         path: /opt/qt6.tar.xz
     - uses: ./.github/build-qtmodule
       with:
+        module: qtsvg
+    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+    - uses: actions/upload-artifact@v2
+      with:
+        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
+        path: /opt/qt6.tar.xz
+    - uses: ./.github/build-qtmodule
+      with:
         module: qtwebengine
     - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
     - uses: actions/upload-artifact@v2
       with:
-        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtwebengine
+        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg-qtwebengine
         path: /opt/qt6.tar.xz
