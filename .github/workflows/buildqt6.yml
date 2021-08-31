@@ -133,7 +133,6 @@ jobs:
       with:
         github-token: which?
         script: |
-          const core = require('@actions/core');
           const cache = require('@actions/cache');
           const paths = [
               'build-qtwebengine',
