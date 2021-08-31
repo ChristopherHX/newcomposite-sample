@@ -146,7 +146,6 @@ jobs:
           if(cacheKey) {
             core.setOutput('success', 'true');
           }
-      shell: node {0}
       id: restore-cache
     - uses: ./.github/get-qt-source
       if: ${{ steps.restore-cache.outputs.success == 'true' }}
@@ -184,4 +183,3 @@ jobs:
           const key = 'build-qtwebengine-' + Date.now();
           const cacheId = await cache.saveCache(paths, key)
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
-      shell: node {0}
