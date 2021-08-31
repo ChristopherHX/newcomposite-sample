@@ -128,19 +128,21 @@ jobs:
           core.exportVariable('CXX', 'wclang++');
           core.exportVariable('LD_LIBRARY_PATH', '/opt/llvm/lib');
     - run: |
-        const core = require('@actions/core');
-        const cache = require('@actions/cache');
-        const paths = [
-            'build-qtwebengine',
-        ]
-        const key = 'build-qtwebengine-' + Date.now();
-        const restoreKeys = [
-            'build-qtwebengine-',
-        ]
-        const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
-        if(cacheKey) {
-          core.setOutput('success', 'true');
-        }
+        (async () => {
+          const core = require('@actions/core');
+          const cache = require('@actions/cache');
+          const paths = [
+              'build-qtwebengine',
+          ]
+          const key = 'build-qtwebengine-' + Date.now();
+          const restoreKeys = [
+              'build-qtwebengine-',
+          ]
+          const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
+          if(cacheKey) {
+            core.setOutput('success', 'true');
+          }
+        })()
       shell: node {0}
       id: restore-cache
     - uses: ./.github/get-qt-source
@@ -169,11 +171,13 @@ jobs:
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg-qtwebengine
         path: /opt/qt6.tar.xz
     - run: |
-        const cache = require('@actions/cache');
-        const paths = [
-            'build-qtwebengine',
-        ]
-        const key = 'build-qtwebengine-' + Date.now();
-        const cacheId = await cache.saveCache(paths, key)
+        (async () => {
+          const cache = require('@actions/cache');
+          const paths = [
+              'build-qtwebengine',
+          ]
+          const key = 'build-qtwebengine-' + Date.now();
+          const cacheId = await cache.saveCache(paths, key)
+        })()
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
       shell: node {0}
