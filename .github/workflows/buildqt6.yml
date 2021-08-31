@@ -137,8 +137,10 @@ jobs:
           const paths = [
               'build-qtwebengine',
           ]
-          const key = 'build-qtwebengine-1-' + Date.now();
+          const key = 'build-qtwebengine-3-' + Date.now();
           const restoreKeys = [
+              'build-qtwebengine-2-',
+              'build-qtwebengine-1-',
               'build-qtwebengine-',
           ]
           const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
@@ -157,14 +159,14 @@ jobs:
       with:
         module: qtwebengine
       continue-on-error: true
-      timeout-minutes: 5
+      timeout-minutes: 300
     - uses: ./.github/build-qtmodule
       id: build2
       if: ${{ steps.restore-cache.outputs.success != 'true' }}
       with:
         module: qtwebengine
       continue-on-error: true
-      timeout-minutes: 5
+      timeout-minutes: 300
     - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
     - uses: actions/upload-artifact@v2
@@ -180,7 +182,7 @@ jobs:
           const paths = [
               'build-qtwebengine',
           ]
-          const key = 'build-qtwebengine-1-' + Date.now();
+          const key = 'build-qtwebengine-3-' + Date.now();
           const cacheId = await cache.saveCache(paths, key)
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
   buildqt6-webengine2:
@@ -242,9 +244,12 @@ jobs:
           const paths = [
               'build-qtwebengine',
           ]
-          const key = 'build-qtwebengine-1-' + Date.now();
+          const key = 'build-qtwebengine-3-' + Date.now();
           const restoreKeys = [
+              'build-qtwebengine-3-',
+              'build-qtwebengine-2-',
               'build-qtwebengine-1-',
+              'build-qtwebengine-',
           ]
           const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
           if(cacheKey) {
@@ -261,14 +266,14 @@ jobs:
       with:
         module: qtwebengine
       continue-on-error: true
-      timeout-minutes: 5
+      timeout-minutes: 300
     - uses: ./.github/build-qtmodule
       id: build2
       if: ${{ steps.restore-cache.outputs.success != 'true' }}
       with:
         module: qtwebengine
       continue-on-error: true
-      timeout-minutes: 5
+      timeout-minutes: 300
     - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
     - uses: actions/upload-artifact@v2
@@ -284,6 +289,6 @@ jobs:
           const paths = [
               'build-qtwebengine',
           ]
-          const key = 'build-qtwebengine-2-' + Date.now();
+          const key = 'build-qtwebengine-4-' + Date.now();
           const cacheId = await cache.saveCache(paths, key)
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
