@@ -127,11 +127,53 @@ jobs:
           core.exportVariable('CC', 'wclang');
           core.exportVariable('CXX', 'wclang++');
           core.exportVariable('LD_LIBRARY_PATH', '/opt/llvm/lib');
-    - uses: ./.github/build-qtmodule
+    - run: |
+        const core = require('@actions/core');
+        const cache = require('@actions/cache');
+        const paths = [
+            'build-qtwebengine',
+        ]
+        const key = 'build-qtwebengine-' + Date.now();
+        const restoreKeys = [
+            'build-qtwebengine-',
+        ]
+        const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
+        if(cacheKey) {
+          core.setOutput('success', 'true');
+        }
+      shell: node {0}
+      id: restore-cache
+    - uses: ./.github/get-qt-source
+      if: ${{ steps.restore-cache.outputs.success == 'true' }}
       with:
         module: qtwebengine
+    - uses: ./.github/continue-build-qtmodule
+      id: build1
+      if: ${{ steps.restore-cache.outputs.success == 'true' }}
+      with:
+        module: qtwebengine
+      continue-on-error: true
+      timeout-minutes: 5
+    - uses: ./.github/build-qtmodule
+      id: build2
+      if: ${{ steps.restore-cache.outputs.success != 'true' }}
+      with:
+        module: qtwebengine
+      continue-on-error: true
+      timeout-minutes: 5
     - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+      if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
     - uses: actions/upload-artifact@v2
+      if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
       with:
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg-qtwebengine
         path: /opt/qt6.tar.xz
+    - run: |
+        const cache = require('@actions/cache');
+        const paths = [
+            'build-qtwebengine',
+        ]
+        const key = 'build-qtwebengine-' + Date.now();
+        const cacheId = await cache.saveCache(paths, key)
+      if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
+      shell: node {0}

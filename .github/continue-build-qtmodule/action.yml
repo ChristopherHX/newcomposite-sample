@@ -1,0 +1,12 @@
+inputs:
+  module:
+    description: qt module to build
+runs:
+  using: composite
+  steps:
+  - name: Build Qt
+    run: cmake --build build-${{ inputs.module }} --parallel
+    shell: bash
+  - name: Install Qt
+    run: cmake --install build-${{ inputs.module }}
+    shell: bash
