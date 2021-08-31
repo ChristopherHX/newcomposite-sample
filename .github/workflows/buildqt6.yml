@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ubuntu:16.04
     env:
-      NODE_PATH: ${{github.workspace}}
+      NODE_PATH: ${{github.workspace}}/.github/node_modules
     #needs: buildqt6
     steps:
     - name: Download artifact
