@@ -81,6 +81,8 @@ jobs:
   buildqt6-webengine:
     runs-on: ubuntu-latest
     container: ubuntu:16.04
+    env:
+      NODE_PATH: ${{github.workspace}}
     #needs: buildqt6
     steps:
     - name: Download artifact
