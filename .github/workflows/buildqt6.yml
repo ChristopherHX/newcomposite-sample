@@ -183,12 +183,12 @@ jobs:
           const key = 'build-qtwebengine-1-' + Date.now();
           const cacheId = await cache.saveCache(paths, key)
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
-    buildqt6-webengine:
+    buildqt6-webengine2:
     runs-on: ubuntu-latest
     container: ubuntu:16.04
     env:
       NODE_PATH: ${{github.workspace}}/.github/node_modules
-    #needs: buildqt6
+    needs: buildqt6-webengine
     steps:
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
