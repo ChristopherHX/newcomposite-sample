@@ -2,6 +2,7 @@ name: build-qt6
 on: push
 jobs:
   libcpp:
+    if: 'false'
     runs-on: ${{ matrix.OS }}
     strategy:
       fail-fast: false
