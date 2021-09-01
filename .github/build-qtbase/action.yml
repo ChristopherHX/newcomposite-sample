@@ -9,5 +9,5 @@ runs:
     run: cmake --build build-qtbase --parallel
     shell: bash
   - name: Install Qt
-    run: cmake --install build-qtbase
+    run: sudo cmake --install build-qtbase
     shell: bash

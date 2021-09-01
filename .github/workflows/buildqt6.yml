@@ -75,7 +75,7 @@ jobs:
           core.exportVariable('CC', 'wclang-mac');
           core.exportVariable('CXX', 'wclang++-mac');
     - uses: ./.github/build-qtbase
-    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
     - uses: actions/upload-artifact@v2
       with:
         name: qtbase
@@ -83,7 +83,7 @@ jobs:
     - uses: ./.github/build-qtmodule
       with:
         module: qtshadertools
-    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
     - uses: actions/upload-artifact@v2
       with:
         name: qtbase-qtshadertools
@@ -91,7 +91,7 @@ jobs:
     - uses: ./.github/build-qtmodule
       with:
         module: qtdeclarative
-    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
     - uses: actions/upload-artifact@v2
       with:
         name: qtbase-qtshadertools-qtdeclarative
@@ -99,7 +99,7 @@ jobs:
     - uses: ./.github/build-qtmodule
       with:
         module: qtwebchannel
-    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
     - uses: actions/upload-artifact@v2
       with:
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel
@@ -107,7 +107,7 @@ jobs:
     - uses: ./.github/build-qtmodule
       with:
         module: qtsvg
-    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
     - uses: actions/upload-artifact@v2
       with:
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
@@ -121,7 +121,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
-    - run: mkdir -p /opt/qt6 && tar -xJf $PWD/qt6.tar.xz -C /opt/qt6
+    - run: sudo mkdir -p /opt/qt6 && sudo tar -xJf $PWD/qt6.tar.xz -C /opt/qt6
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
@@ -172,7 +172,7 @@ jobs:
         module: qtwebengine
       continue-on-error: true
       timeout-minutes: 300
-    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
     - uses: actions/upload-artifact@v2
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
@@ -199,7 +199,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
-    - run: mkdir -p /opt/qt6 && tar -xJf $PWD/qt6.tar.xz -C /opt/qt6
+    - run: sudo mkdir -p /opt/qt6 && sudo tar -xJf $PWD/qt6.tar.xz -C /opt/qt6
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
@@ -250,7 +250,7 @@ jobs:
         module: qtwebengine
       continue-on-error: true
       timeout-minutes: 300
-    - run: tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
     - uses: actions/upload-artifact@v2
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}

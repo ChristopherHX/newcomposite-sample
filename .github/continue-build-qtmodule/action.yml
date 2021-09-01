@@ -8,5 +8,5 @@ runs:
     run: cmake --build build-${{ inputs.module }} --parallel
     shell: bash
   - name: Install Qt
-    run: cmake --install build-${{ inputs.module }}
+    run: sudo cmake --install build-${{ inputs.module }}
     shell: bash
