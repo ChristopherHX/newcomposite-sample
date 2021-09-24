@@ -5,18 +5,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+  waiting:
+    if: "!failure() && !cancelled()"
+    needs:
+    - base
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
   deploy_backend_staging:
     if: "!failure() && !cancelled()"
+    needs:
+    - waiting
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
   deploy_frontend_staging:
     if: 'false'
+    needs:
+    - waiting
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
   e2e-test:
     if: "!failure() && !cancelled() && (success('deploy_backend_staging') || success('deploy_frontend_staging'))"
+    needs:
+    - deploy_backend_staging
+    - deploy_frontend_staging
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
