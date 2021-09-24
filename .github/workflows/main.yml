@@ -1,9 +1,23 @@
 on: push
 jobs:
-  comp:
-    runs-on: self-hosted
+  base:
+    if: 'false'
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-      with:
-        path: testa
-    - uses: ./testa/.github/comp1
+  deploy_backend_staging:
+    if: "!failure() && !cancelled()"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+  deploy_frontend_staging:
+    if: 'false'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+  e2e-test:
+    if: "!failure() && !cancelled() && (success('deploy_backend_staging') || success('deploy_frontend_staging'))"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
