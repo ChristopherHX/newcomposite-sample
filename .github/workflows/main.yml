@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
   deploy_backend_staging:
-    if: "!failure() && !cancelled()"
+    if: "false"
     needs:
     - waiting
     runs-on: ubuntu-latest
