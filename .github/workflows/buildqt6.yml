@@ -103,7 +103,9 @@ jobs:
         make -j8 cxx cxxabi
         make install
     - run: tar -cJf /opt/libcxx64.tar.xz -C libcxx64-build .
+      if: always()
     - uses: actions/upload-artifact@v2
+      if: always()
       with:
         name: libcxx64
         path: /opt/libcxx64.tar.xz
