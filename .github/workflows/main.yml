@@ -1,9 +1,4 @@
 on: push
 jobs:
   comp:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        path: testa
-    - uses: ./testa/.github/comp1
+    uses: ./weirdworkflow/workflow.yml
