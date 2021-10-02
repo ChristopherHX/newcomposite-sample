@@ -1,4 +1,10 @@
 on: push
 jobs:
   comp:
+    name: comp-${{toJSON(strategy)}}
     uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@reusable-workflows
+  after:
+    needs: comp
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo '${{toJSON(needs)}}'
