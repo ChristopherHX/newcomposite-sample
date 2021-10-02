@@ -1,4 +1,4 @@
 on: push
 jobs:
   comp:
-    uses: ./.github/workflows/weirdworkflow.yml@reusable-workflows
+    uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@reusable-workflows
