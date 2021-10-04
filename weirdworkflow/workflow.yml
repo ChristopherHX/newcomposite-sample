@@ -2,10 +2,15 @@ on: workflow_call
 jobs:
   myjoba:
     runs-on: ubuntu-latest
+    outputs:
+      myout: ${{github.event_name}}
     steps:
     - run: echo Hello World
   myjobb:
     runs-on: ubuntu-latest
+    needs:
+    - myjoba
     steps:
     - run: echo Hello World2
     - run: echo '${{toJSON(github}}'
+    - run: echo '${{toJSON(needs}}'
