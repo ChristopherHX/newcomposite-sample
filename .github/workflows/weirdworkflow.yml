@@ -3,7 +3,7 @@ jobs:
   myjoba:
     runs-on: ubuntu-latest
     outputs:
-      myout: ${{github.event_name}}
+      myout: myin
     steps:
     - run: echo Hello World
   myjobb:
