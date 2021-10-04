@@ -12,5 +12,5 @@ jobs:
     - myjoba
     steps:
     - run: echo Hello World2
-    - run: echo '${{toJSON(github}}'
-    - run: echo '${{toJSON(needs}}'
+    - run: echo '${{toJSON(github)}}'
+    - run: echo '${{toJSON(needs)}}'
