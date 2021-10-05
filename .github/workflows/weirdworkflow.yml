@@ -14,3 +14,17 @@ jobs:
     - run: echo Hello World2
     - run: echo '${{toJSON(github)}}'
     - run: echo '${{toJSON(needs)}}'
+  myjobc:
+    strategy:
+      matrix:
+        os:
+        - 'ubuntu-latest'
+        - 'windows-latest'
+    runs-on: ${{ matrix.os || 'ubuntu-latest'}}
+    needs:
+    - myjoba
+    steps:
+    - run: echo Hello World2
+    - run: echo '${{toJSON(github)}}'
+    - run: echo '${{toJSON(needs)}}'
+
