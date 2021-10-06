@@ -1,4 +1,7 @@
-on: workflow_call
+on: 
+  workflow_call:
+    secrets:
+      nosecret: {}
 jobs:
   myjoba:
     runs-on: ubuntu-latest
@@ -25,6 +28,6 @@ jobs:
     - myjoba
     steps:
     - run: echo Hello World2
-    - run: echo '${{toJSON(github)}}'
+    - run: echo '${{toJSON(secrets)}}'
     - run: echo '${{toJSON(needs)}}'
 
