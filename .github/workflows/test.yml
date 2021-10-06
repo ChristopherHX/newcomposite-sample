@@ -1,0 +1,6 @@
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  docker-build:
+    uses: purplebooth/common-pipelines/.github/workflows/docker-build.yml@main
