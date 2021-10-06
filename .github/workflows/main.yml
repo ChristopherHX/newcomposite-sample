@@ -4,7 +4,7 @@ jobs:
     name: comp-${{toJSON(strategy)}}
     uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@othertest
     secrets:
-      nosecret: ${{secrets.GITHUB_TOKEN}}
+      nosecret: ${{secrets.GITHUB_TOKEN || 'stub'}}
   after:
     needs: comp
     runs-on: ubuntu-latest
