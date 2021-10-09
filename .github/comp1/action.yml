@@ -4,7 +4,9 @@ runs:
   using: composite
   steps:
   - run: echo ${{inputs.justaSecret}}
+    shell: cmd
   - run: echo ${{env.justaSecret}}
+    shell: cmd
   - uses: actions/setup-node@v2
     with:
       node-version: '16'
