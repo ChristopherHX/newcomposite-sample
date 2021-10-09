@@ -4,14 +4,17 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
-        - ubuntu-latest
-        - ubuntu-latest
+#         - ubuntu-latest
+#         - ubuntu-latest
+#         - ubuntu-latest
         - selfhoster
     runs-on: ${{matrix.os}}
     steps:
     - run: echo Hello World
       shell: cmd
+      if: env.ACT
+    - run: sleep 100
+      shell: powershell
       if: env.ACT
     - run: echo Hello World
       if: "!env.ACT"
