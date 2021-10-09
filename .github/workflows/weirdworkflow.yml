@@ -1,4 +1,15 @@
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      test:
+        default: 'Hello World'
+        type: string
+      number:
+        type: number
+        default: 42
+      bool:
+        type: boolean
+      
 jobs:
   myjoba:
     strategy:
