@@ -3,6 +3,7 @@ jobs:
   test:
     runs-on: self-hosted
     steps:
+    - uses: actions/checkout@v2
     - uses: ./.github/comp1
       with:
         justaSecret: ${{secrets.GITHUB_TOKEN}}
