@@ -15,16 +15,22 @@ jobs:
       if: env.ACT
     - run: |
         echo '${{toJSON(github)}}'
+        echo '${{toJSON(inputs)}}'
         sleep 1
         echo '${{toJSON(github)}}'
+        echo '${{toJSON(inputs)}}'
         sleep 1
         echo '${{toJSON(github)}}'
+        echo '${{toJSON(inputs)}}'
         sleep 1
         echo '${{toJSON(github)}}'
+        echo '${{toJSON(inputs)}}'
         sleep 1
         echo '${{toJSON(github)}}'
+        echo '${{toJSON(inputs)}}'
         sleep 1
         echo '${{toJSON(github)}}'
+        echo '${{toJSON(inputs)}}'
         sleep 1
         sleep 100
       shell: powershell
