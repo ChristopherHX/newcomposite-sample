@@ -2,7 +2,7 @@ on: push
 jobs:
   comp:
     name: comp-${{toJSON(strategy)}}
-    uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@reusable-workflows
+    uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@reuse-3
   after:
     needs: comp
     runs-on: ubuntu-latest
