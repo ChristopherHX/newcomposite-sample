@@ -1,7 +1,7 @@
 on: push
 jobs:
   test:
-    runs-on: self-hosed
+    runs-on: self-hosted
     steps:
     - uses: ./.github/comp1
       with:
