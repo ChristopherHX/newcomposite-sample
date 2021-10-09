@@ -11,7 +11,7 @@ jobs:
         justaSecret: ${{secrets.GITHUB_TOKEN}}
 
   comp:
-    if: 'false'
+#     if: 'false'
     name: comp-${{toJSON(strategy)}}
     uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@reuse-3
   after:
