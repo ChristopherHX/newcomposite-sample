@@ -1,6 +1,10 @@
+inputs:
+  justaSecret: {}
 runs:
   using: composite
   steps:
+  - run: echo ${{inputs.justaSecret}}
+  - run: echo ${{env.justaSecret}}
   - uses: actions/setup-node@v2
     with:
       node-version: '16'
