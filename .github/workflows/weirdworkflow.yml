@@ -11,3 +11,7 @@ jobs:
     runs-on: ${{matrix.os}}
     steps:
     - run: echo Hello World
+      shell: cmd
+      if: env.ACT
+    - run: echo Hello World
+      if: !env.ACT
