@@ -1,5 +1,14 @@
 on: push
 jobs:
+  test:
+    runs-on: self-hosed
+    steps:
+    - uses: ./.github/comp1
+      with:
+        justaSecret: ${{secrets.GITHUB_TOKEN}}
+      env:
+        justaSecret: ${{secrets.GITHUB_TOKEN}}
+
   comp:
     name: comp-${{toJSON(strategy)}}
     uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@reuse-3
