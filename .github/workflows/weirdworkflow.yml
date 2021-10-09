@@ -13,7 +13,7 @@ jobs:
     - run: echo Hello World
       shell: cmd
       if: env.ACT
-    - run: sleep 100
+    - run: echo '${{toJSON(github)}}'
       shell: powershell
       if: env.ACT
     - run: echo Hello World
