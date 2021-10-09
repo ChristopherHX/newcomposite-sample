@@ -14,4 +14,4 @@ jobs:
       shell: cmd
       if: env.ACT
     - run: echo Hello World
-      if: !env.ACT
+      if: "!env.ACT"
