@@ -1,9 +1,36 @@
 on: push
+name: continue-on-error
 jobs:
-  comp:
+  failing-job:
+    runs-on: self-hosted
+    continue-on-error: true
+    steps:
+    - run: echo '${{toJSON(github)}}'
+    - run: exit 1
+  after1:
+    needs:
+    - failing-job
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v2
-      with:
-        path: testa
-    - uses: ./testa/.github/comp1
+    - run: echo '${{toJSON(github)}}'
+    - run: exit ${{secrets.failafter1 && '1' || '0'}}
+  failing-matrix-job:
+    strategy:
+      matrix:
+        code:
+        - 0
+        - 1
+        - 1
+        - 1
+    runs-on: self-hosted
+    continue-on-error: ${{matrix.code!=0}}
+    steps:
+    - run: echo '${{toJSON(github)}}'
+    - run: exit ${{matrix.code}}
+  after2:
+    needs:
+    - failing-matrix-job
+    runs-on: self-hosted
+    steps:
+    - run: echo '${{toJSON(github)}}'
+    - run: exit ${{secrets.failafter2 && '1' || '0'}}
