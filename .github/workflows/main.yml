@@ -2,7 +2,7 @@ on: push
 name: continue-on-error
 jobs:
   failing-job:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     continue-on-error: true
     steps:
     - run: echo '${{toJSON(github)}}'
@@ -10,7 +10,7 @@ jobs:
   after1:
     needs:
     - failing-job
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
     - run: echo '${{toJSON(github)}}'
     - run: exit ${{secrets.failafter1 && '1' || '0'}}
@@ -22,7 +22,7 @@ jobs:
         - 1
         - 1
         - 1
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     continue-on-error: ${{matrix.code!=0}}
     steps:
     - run: echo '${{toJSON(github)}}'
@@ -30,7 +30,7 @@ jobs:
   after2:
     needs:
     - failing-matrix-job
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
     - run: echo '${{toJSON(github)}}'
     - run: exit ${{secrets.failafter2 && '1' || '0'}}
