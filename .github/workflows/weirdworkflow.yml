@@ -11,14 +11,14 @@ on:
         type: boolean
       
 jobs:
-  myjoba:
+  myjob a:
     strategy:
       matrix:
         os:
+        - ubuntu-latest
 #         - ubuntu-latest
 #         - ubuntu-latest
-#         - ubuntu-latest
-        - selfhoster
+#         - selfhoster
     runs-on: ${{matrix.os}}
     steps:
     - run: echo Hello World
