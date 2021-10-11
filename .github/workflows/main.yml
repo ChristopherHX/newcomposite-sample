@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
+    - run: echo '${{toJSON(needs)}}'
     - run: echo '${{toJSON(github)}}'
     - run: exit 1
   after1:
@@ -12,6 +13,7 @@ jobs:
     - failing-job
     runs-on: ubuntu-latest
     steps:
+    - run: echo '${{toJSON(needs)}}'
     - run: echo '${{toJSON(github)}}'
     - run: exit ${{secrets.failafter1 && '1' || '0'}}
   failing-matrix-job:
@@ -25,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: ${{matrix.code!=0}}
     steps:
+    - run: echo '${{toJSON(needs)}}'
     - run: echo '${{toJSON(github)}}'
     - run: exit ${{matrix.code}}
   after2:
@@ -32,5 +35,6 @@ jobs:
     - failing-matrix-job
     runs-on: ubuntu-latest
     steps:
+    - run: echo '${{toJSON(needs)}}'
     - run: echo '${{toJSON(github)}}'
     - run: exit ${{secrets.failafter2 && '1' || '0'}}
