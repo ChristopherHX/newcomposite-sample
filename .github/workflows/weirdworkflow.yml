@@ -3,19 +3,11 @@ on:
     inputs:
       runs-on:
         type: string
-        default: windows-latest
+        default: '["windows-latest"]'
 jobs:
   myjoba:
-    runs-on: ${{inputs.runs-on || 'ubuntu-latest'}}
+    runs-on: ${{fromJSON(inputs.runs-on)}}
     outputs:
       myout: myin
     steps:
     - run: echo Hello World
-  myjobb:
-    runs-on: ubuntu-latest
-    needs:
-    - myjoba
-    steps:
-    - run: echo Hello World2
-    - run: echo '${{toJSON(github)}}'
-    - run: echo '${{toJSON(needs)}}'
