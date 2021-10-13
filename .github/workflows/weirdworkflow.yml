@@ -1,7 +1,12 @@
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      runs-on:
+        type: string
+        default: windows-latest
 jobs:
   myjoba:
-    runs-on: ubuntu-latest
+    runs-on: ${{inputs.runs-on || 'ubuntu-latest'}}
     outputs:
       myout: myin
     steps:
