@@ -3,6 +3,8 @@ jobs:
   comp:
     name: comp-${{toJSON(strategy)}}
     uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@reusable-workflows
+    with:
+      runs-on: '["self-hosted", "linux"]'
   after:
     needs: comp
     runs-on: ubuntu-latest
