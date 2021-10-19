@@ -1,6 +1,6 @@
 on: push
 env:
-  INPUT_A: ${{inputs.x}}-${{matrix.test}}
+  INPUT_A: ${{inputs.x}}
 jobs:
   comp:
     name: comp-${{toJSON(strategy)}}
