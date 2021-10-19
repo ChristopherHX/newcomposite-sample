@@ -3,11 +3,12 @@ jobs:
   comp:
     name: comp-${{toJSON(strategy)}}
     uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@reusable-workflows
-    with:
-      runs-on: '["self-hosted", "linux"]'
-      test: ${{inputs.x}}-${{matrix.test}}
+    #with:
+    #  runs-on: '["self-hosted", "linux"]'
   after:
     needs: comp
+    container:
+      image: ${{inputs.x}}-${{matrix.test}}
     runs-on: ubuntu-latest
     steps:
     - run: echo '${{toJSON(github)}}'
