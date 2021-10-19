@@ -6,8 +6,9 @@ jobs:
     name: comp-${{toJSON(strategy)}}
     if: "!inputs.x"
     uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@reusable-workflows
-    #with:
-    #  runs-on: '["self-hosted", "linux"]'
+    with:
+      runs-on: '["self-hosted", "linux"]'
+      test: ${{inputs.x}}-hi
   after:
     strategy:
       matrix:
