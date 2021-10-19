@@ -1,4 +1,6 @@
 on: push
+env:
+  INPUT_A: ${{inputs.x}}-${{matrix.test}}
 jobs:
   comp:
     name: comp-${{toJSON(strategy)}}
@@ -7,6 +9,10 @@ jobs:
     #with:
     #  runs-on: '["self-hosted", "linux"]'
   after:
+    strategy:
+      matrix:
+        os:
+        - ${{inputs.runs-on || 'N/A'}}
     needs: comp
     #container:
     #  image: ${{inputs.x}}-${{matrix.test}}
