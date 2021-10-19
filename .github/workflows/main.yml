@@ -2,13 +2,14 @@ on: push
 jobs:
   comp:
     name: comp-${{toJSON(strategy)}}
+    if: "!inputs.x"
     uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@reusable-workflows
     #with:
     #  runs-on: '["self-hosted", "linux"]'
   after:
     needs: comp
-    container:
-      image: ${{inputs.x}}-${{matrix.test}}
+    #container:
+    #  image: ${{inputs.x}}-${{matrix.test}}
     runs-on: ubuntu-latest
     steps:
     - run: echo '${{toJSON(github)}}'
