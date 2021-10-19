@@ -5,6 +5,7 @@ jobs:
     uses: ChristopherHX/newcomposite-sample/.github/workflows/weirdworkflow.yml@reusable-workflows
     with:
       runs-on: '["self-hosted", "linux"]'
+      test: ${{inputs.x}}-${{matrix.test}}
   after:
     needs: comp
     runs-on: ubuntu-latest
