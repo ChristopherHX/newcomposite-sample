@@ -20,3 +20,5 @@ jobs:
     steps:
     - run: echo '${{toJSON(github)}}'
     - run: echo '${{toJSON(needs)}}'
+    outputs: |
+      ${{fromJSON('{"test": "b"}')}}
