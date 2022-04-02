@@ -1,0 +1,47 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*'
+    paths:
+      - .github/workflows/docker.yml
+      - '*.Dockerfile'
+      - requirements.txt
+      - docker-bake.hcl
+      - "matrix.json"
+
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      built_matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:  
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Load JSON to matrix
+        id: set-matrix
+        run: |
+          output=$(cat ./matrix.json)
+          output="${output//'%'/'%25'}"
+          output="${output//$'\n'/'%0A'}"
+          output="${output//$'\r'/'%0D'}"
+          echo "::set-output name=matrix::$output"
+  Bake:
+    needs: matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ${{ insert }}: ${{ fromJson(needs.matrix.outputs.built_matrix) }}
+        exclude:
+          - bake-target: alpine
+            flask: 2.1.0
+
+    steps:
+    - run: echo "$MATRIX"
+      env:
+        MATRIX: ${{tojson(matrix)}}
