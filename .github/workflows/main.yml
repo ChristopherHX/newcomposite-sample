@@ -1,7 +1,12 @@
 on: push
 jobs:
   comp:
-    runs-on: self-hosted
+    strategy:
+      matrix:
+        l:
+        - ubuntu-latest
+        - self-hosted
+    runs-on: ${{ matrix.l }}
     steps:
     - uses: actions/checkout@v2
     - uses: ./
