@@ -9,6 +9,6 @@ jobs:
     runs-on: ${{ matrix.l }}
     steps:
     - uses: actions/checkout@v2
-    - uses: ./
-    - uses: ./
-    - uses: ./
+    - uses: ./.github/comp1
+    - uses: ./.github/comp1
+    - uses: ./.github/comp1
