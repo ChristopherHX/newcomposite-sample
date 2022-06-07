@@ -2,7 +2,7 @@ inputs:
   module:
     default: "qtbase"
   major:
-    default: "6.3"
+    default: "6.2"
   minor:
     default: "0"
   # dest:
