@@ -109,7 +109,7 @@ jobs:
           var length = ${{ strategy.job-total }};// ${{ matrix.i }};
           var restoreKeys = [];
           for(var i = length - 1; i >= 0; i--) {
-            for(var attempt = run_attempt; attempt >= 1; attempt--)
+            for(var attempt = run_attempt; attempt >= 1; attempt--) {
               restoreKeys.push("build-qtwebengine-6.2.4-" + attempt + "-" + i);
             }
           }
