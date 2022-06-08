@@ -4,7 +4,7 @@ inputs:
   major:
     default: "6.2"
   minor:
-    default: "0"
+    default: "4"
   # dest:
   #   default: ${{ github.workspace }}
 runs:
