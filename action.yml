@@ -1,0 +1,15 @@
+inputs:
+  token: {}
+runs:
+  using: composite
+  steps:
+  - uses: christopherhx/script@main
+    with:
+      pre-continue-on-error: true
+      pre-shell: bash
+      pre: |
+       echo Pre '${{ inputs.token }}'
+      main: |
+       echo Main '${{ inputs.token }}'
+      post: |
+       echo Post '${{ inputs.token }}'
