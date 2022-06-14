@@ -13,3 +13,13 @@ runs:
        echo Main '${{ inputs.token }}'
       post: |
        echo Post '${{ inputs.token }}'
+  - uses: christopherhx/script@main
+    with:
+      pre-continue-on-error: true
+      pre-shell: bash
+      pre: |
+       echo Pre2 '${{ inputs.token }}'
+      main: |
+       echo Main2 '${{ inputs.token }}'
+      post: |
+       echo Post2 '${{ inputs.token }}'
