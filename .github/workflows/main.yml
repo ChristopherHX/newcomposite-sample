@@ -10,7 +10,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         path: .github/actions
-        repository: ${{ steps.oidc.job_workflow_repo_name_and_owner }}
-        ref: ${{ steps.oidc.job_workflow_repo_ref }}
+        repository: ${{ steps.oidc.outputs.job_workflow_repo_name_and_owner }}
+        ref: ${{ steps.oidc.outputs.job_workflow_repo_ref }}
     - run: ls
     - uses: ./.github/actions/dowork
