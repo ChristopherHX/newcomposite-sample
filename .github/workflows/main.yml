@@ -1,40 +1,16 @@
-on: push
-name: continue-on-error
+on:
+  workflow_call:
 jobs:
-  failing-job:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-    - run: echo '${{toJSON(needs)}}'
-    - run: echo '${{toJSON(github)}}'
-    - run: exit 1
-  after1:
-    needs:
-    - failing-job
+  test:
     runs-on: ubuntu-latest
     steps:
-    - run: echo '${{toJSON(needs)}}'
-    - run: echo '${{toJSON(github)}}'
-    - run: exit ${{secrets.failafter1 && '1' || '0'}}
-  failing-matrix-job:
-    strategy:
-      matrix:
-        code:
-        - 0
-        - 1
-        - 1
-        - 1
-    runs-on: ubuntu-latest
-    continue-on-error: ${{matrix.code!=0}}
-    steps:
-    - run: echo '${{toJSON(needs)}}'
-    - run: echo '${{toJSON(github)}}'
-    - run: exit ${{matrix.code}}
-  after2:
-    needs:
-    - failing-matrix-job
-    runs-on: ubuntu-latest
-    steps:
-    - run: echo '${{toJSON(needs)}}'
-    - run: echo '${{toJSON(github)}}'
-    - run: exit ${{secrets.failafter2 && '1' || '0'}}
+    - uses: ChristopherHX/oidc@main
+      id: oidc
+    - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
+      with:
+        path: .github/actions
+        repository: ${{ steps.oidc.job_workflow_repo_name_and_owner }}
+        ref: ${{ steps.oidc.job_workflow_repo_ref }}
+    - run: ls
+    - uses: ./.github/actions/dowork
