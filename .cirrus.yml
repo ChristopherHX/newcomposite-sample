@@ -9,6 +9,7 @@ task:
     ssldir="$PWD/ssl"
     cd openssl
     ./config --prefix "$ssldir"
+    make -j4
     make install_sw -j4
     cd ..
     git clone --recursive https://github.com/minecraft-linux/mcpelauncher-manifest
