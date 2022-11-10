@@ -18,7 +18,8 @@ task:
     make install_sw || sudo make install_sw
     cd ..
     git clone --recursive https://github.com/minecraft-linux/mcpelauncher-manifest
-    cmake -B build -S mcpelauncher-manifest "-DOPENSSL_ROOT_DIR=$ssldir" "-DOPENSSL_CRYPTO_LIBRARY=$ssldir/lib/libcrypto.dylib" -DBUILD_UI=OFF
+    sed -i '' s/PROT_EXEC/0/g mcpelauncher-manifest/mcpelauncher-linker/bionic/linker/linker_block_allocator.cpp
+    cmake -B build -S mcpelauncher-manifest -DCMAKE_BUILD_TYPE=Debug "-DOPENSSL_ROOT_DIR=$ssldir" "-DOPENSSL_CRYPTO_LIBRARY=$ssldir/lib/libcrypto.dylib" -DBUILD_UI=OFF
     cmake --build build --parallel
     ./build/mcpelauncher-client/mcpelauncher-client --help || :
     ./build/mcpelauncher-client/mcpelauncher-client -dg game || :
