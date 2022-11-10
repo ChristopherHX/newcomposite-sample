@@ -5,6 +5,11 @@ task:
   script: |
     echo "Hello World from macOS!"
     uname -a
+    curl -LO https://github.com/ChristopherHX/mcpelauncherlegacy/releases/download/0.0.3/libmcpelauncherlegacyarm64-v8a.so
+    mkdir -p game/lib/arm64-v8a
+    mkdir -p game/assets
+    cp libmcpelauncherlegacyarm64-v8a.so game/lib/arm64-v8a/libminecraftpe.so
+    file libmcpelauncherlegacyarm64-v8a.so
     git clone https://github.com/openssl/openssl.git -b openssl-3.1
     ssldir="$PWD/ssl"
     cd openssl
@@ -15,4 +20,5 @@ task:
     git clone --recursive https://github.com/minecraft-linux/mcpelauncher-manifest
     cmake -B build -S mcpelauncher-manifest "-DOPENSSL_ROOT_DIR=$ssldir" "-DOPENSSL_CRYPTO_LIBRARY=$ssldir/lib/libcrypto.dylib" -DBUILD_UI=OFF
     cmake --build build --parallel
-    ./build/mcpelauncher-client/mcpelauncher-client --help
+    ./build/mcpelauncher-client/mcpelauncher-client --help || :
+    ./build/mcpelauncher-client/mcpelauncher-client -dg game || :
