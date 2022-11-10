@@ -8,7 +8,7 @@ task:
     git clone https://github.com/openssl/openssl.git -b openssl-3.1
     ssldir="$PWD/ssl"
     cd openssl
-    ./config --prefix "$ssldir" --openssldir "$ssldir"
+    ./config --prefix="$ssldir" --openssldir="$ssldir"
     make -j4
     make install_sw || sudo make install_sw
     cd ..
