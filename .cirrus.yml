@@ -5,7 +5,7 @@ task:
   script: |
     echo "Hello World from macOS!"
     uname -a
-    git clone https://github.com/openssl/openssl.git -b OpenSSL_1_1_1-stable
+    git clone https://github.com/openssl/openssl.git -b openssl-3.1
     ssldir="$PWD/ssl"
     cd openssl
     ./config --prefix "$ssldir"
