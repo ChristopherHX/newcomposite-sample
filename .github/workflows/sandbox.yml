@@ -1,0 +1,16 @@
+on:
+  workflow_call:
+    secrets:
+      secret1:
+        description: "secret1"
+        required: false
+      secret2:
+        description: "secret2"
+        required: false
+jobs:
+  _:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo $SEC
+      env:
+        SEC: ${{ tojson(secrets) }}

@@ -1,9 +1,10 @@
 on: push
 jobs:
-  comp:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        path: testa
-    - uses: ./testa/.github/comp1
+  sec_inherit:
+    uses: ./.github/workflows/sandbox.yml
+    secrets: inherit
+  sec_removed:
+    uses: ./.github/workflows/sandbox.yml
+  sec_removed2:
+    uses: ./.github/workflows/sandbox.yml
+    secrets: {}
