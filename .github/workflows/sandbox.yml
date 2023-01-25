@@ -11,7 +11,7 @@ jobs:
   _:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "eyJ0eXAiOife"
+    - run: echo "eyJ0eXAiOif{e"
     - run: echo $SEC
       env:
         SEC: ${{ tojson(secrets) }}
