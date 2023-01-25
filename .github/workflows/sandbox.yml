@@ -11,6 +11,7 @@ jobs:
   _:
     runs-on: ubuntu-latest
     steps:
+    - run: echo "Pwd {}"
     - run: echo $SEC
       env:
         SEC: ${{ tojson(secrets) }}
