@@ -5,6 +5,11 @@ task:
   script: |
     echo "Hello World from macOS!"
     uname -a
+    # cat > main.cpp << EOF
+    clang++ main.cpp -o main
+    ./main
+    # EOF
+    exit 0
     curl -LO https://github.com/ChristopherHX/mcpelauncherlegacy/releases/download/0.0.3/libmcpelauncherlegacyarm64-v8a.so
     mkdir -p game/lib/arm64-v8a
     mkdir -p game/assets
