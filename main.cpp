@@ -25,5 +25,5 @@ uint32_t* c_get_memory(uint32_t size) {
 }
 
 int main() {
-  printf("c_get_memory %d", (int)(intptr_t)c_get_memory(1024);
+  printf("c_get_memory %d\n", (int)(intptr_t)c_get_memory(1024));
 }
