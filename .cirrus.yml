@@ -10,7 +10,11 @@ task:
     clang++ main.cpp -o main
     ./main
     # EOF
-    exit 0
+    #exit 0
+    git clone https://github.com/minecraft-linux/mcpelauncher-manifest
+    git -C mcpelauncher-manifest submodule update --init --recursive
+    git -C mcpelauncher-manifest/mcpelauncher-linker/bionic fetch origin refs/heads/m1-dev:m1-dev
+    git -C mcpelauncher-manifest/mcpelauncher-linker/bionic checkout m1-dev
     curl -LO https://github.com/ChristopherHX/mcpelauncherlegacy/releases/download/0.0.3/libmcpelauncherlegacyarm64-v8a.so
     mkdir -p game/lib/arm64-v8a
     mkdir -p game/assets
@@ -23,10 +27,6 @@ task:
     make -j4
     make install_sw || sudo make install_sw
     cd ..
-    git clone https://github.com/minecraft-linux/mcpelauncher-manifest
-    git -C mcpelauncher-manifest checkout 21b959eb01179a6c0101b5d5e2b049b9e8250e11
-    git -C mcpelauncher-manifest submodule update --init --recursive
-    sed -i '' s/PROT_EXEC/0/g mcpelauncher-manifest/mcpelauncher-linker/bionic/linker/linker_block_allocator.cpp
     cmake -B build -S mcpelauncher-manifest -DCMAKE_BUILD_TYPE=Debug "-DOPENSSL_ROOT_DIR=$ssldir" "-DOPENSSL_CRYPTO_LIBRARY=$ssldir/lib/libcrypto.dylib" -DBUILD_UI=OFF
     cmake --build build --parallel
     ./build/mcpelauncher-client/mcpelauncher-client --help || :
