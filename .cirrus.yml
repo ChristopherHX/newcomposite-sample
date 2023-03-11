@@ -5,6 +5,7 @@ task:
   script: |
     echo "Hello World from macOS!"
     uname -a
+    csrutil status
     # cat > main.cpp << EOF
     clang++ main.cpp -o main
     ./main
