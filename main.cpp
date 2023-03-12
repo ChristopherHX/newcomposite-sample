@@ -34,9 +34,11 @@ int main() {
   pthread_jit_write_protect_np(0);
   auto fixedaddr = (uint32_t*)mmap((char*)mem + 4096 * 5, 4096, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
   printf("fixedaddr %d\n", (int)(intptr_t)fixedaddr);
+  if (mmap_ptr == MAP_FAILED) {
+    return 1;
+  }
   pthread_jit_write_protect_np(1);
   sys_icache_invalidate(mem, 16384 * 10);
-  if(!fixedaddr) return 1;
   fixedaddr[0] = 12;
   fixedaddr[1] = 15;
   printf("mem[0] %d, mem[1] %d\n", (int)mem[0], (int)mem[1]);
