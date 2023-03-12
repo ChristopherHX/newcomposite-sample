@@ -32,10 +32,10 @@ int main() {
   sys_icache_invalidate(mem, 16384 * 10);
   printf("mem[0] %d, mem[1] %d\n", (int)mem[0], (int)mem[1]);
   pthread_jit_write_protect_np(0);
-  auto fixedaddr = (uint32_t*)mmap(16384 * 5, 16384, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
+  auto fixedaddr = (uint32_t*)mmap((char*)mem + 16384 * 5, 16384, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
   printf("fixedaddr %d\n", (int)(intptr_t)fixedaddr);
   pthread_jit_write_protect_np(1);
   sys_icache_invalidate(mem, 16384 * 10);
-  mem[16384 * 5] = 12;
-  mem[16384 * 5 + 1] = 15;
+  mem[16384 / sizeof(uint32_t) * 5] = 12;
+  mem[16384 / sizeof(uint32_t) * 5 + 1] = 15;
 }
