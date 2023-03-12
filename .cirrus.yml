@@ -10,7 +10,7 @@ task:
     clang++ main.cpp -o main
     ./main
     # EOF
-    #exit 0
+    exit 0
     git clone https://github.com/minecraft-linux/mcpelauncher-manifest
     git -C mcpelauncher-manifest submodule update --init --recursive
     git -C mcpelauncher-manifest/mcpelauncher-linker fetch origin refs/heads/m1-dev:m1-dev

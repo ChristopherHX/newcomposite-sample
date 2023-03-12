@@ -23,22 +23,22 @@ uint32_t* c_get_memory(uint32_t size) {
 
 int main() {
   pthread_jit_write_protect_np(0);
-  auto mem = c_get_memory(16384 * 10);
+  auto mem = c_get_memory(16384 * 100);
   printf("c_get_memory %d\n", (int)(intptr_t)mem);
   mem[0] = 12;
   mem[1] = 15;
   printf("mem[0] %d, mem[1] %d\n", (int)mem[0], (int)mem[1]);
   pthread_jit_write_protect_np(1);
-  sys_icache_invalidate(mem, 16384 * 10);
+  sys_icache_invalidate(mem, 16384 * 100);
   printf("mem[0] %d, mem[1] %d\n", (int)mem[0], (int)mem[1]);
   pthread_jit_write_protect_np(0);
-  auto fixedaddr = (uint32_t*)mmap((char*)mem + 16384 * 5, 16384, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
+  auto fixedaddr = (uint32_t*)mmap((char*)mem + 16384 * 5, 16384 * 3, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
   printf("fixedaddr %d\n", (int)(intptr_t)fixedaddr);
   if (fixedaddr == MAP_FAILED) {
     return 1;
   }
   pthread_jit_write_protect_np(1);
-  sys_icache_invalidate(mem, 16384 * 10);
+  sys_icache_invalidate(mem, 16384 * 100);
   fixedaddr[0] = 12;
   fixedaddr[1] = 15;
   printf("mem[0] %d, mem[1] %d\n", (int)mem[0], (int)mem[1]);
