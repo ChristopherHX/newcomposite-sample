@@ -34,7 +34,7 @@ int main() {
   pthread_jit_write_protect_np(0);
   auto fixedaddr = (uint32_t*)mmap((char*)mem + 4096 * 5, 4096, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
   printf("fixedaddr %d\n", (int)(intptr_t)fixedaddr);
-  if (mmap_ptr == MAP_FAILED) {
+  if (fixedaddr == MAP_FAILED) {
     return 1;
   }
   pthread_jit_write_protect_np(1);
