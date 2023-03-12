@@ -15,11 +15,12 @@ task:
     git -C mcpelauncher-manifest submodule update --init --recursive
     git -C mcpelauncher-manifest/mcpelauncher-linker/bionic fetch origin refs/heads/m1-dev:m1-dev
     git -C mcpelauncher-manifest/mcpelauncher-linker/bionic checkout m1-dev
-    curl -LO https://github.com/ChristopherHX/mcpelauncherlegacy/releases/download/0.0.3/libmcpelauncherlegacyarm64-v8a.so
+    #curl -LO https://github.com/ChristopherHX/mcpelauncherlegacy/releases/download/0.0.3/libmcpelauncherlegacyarm64-v8a.so
     mkdir -p game/lib/arm64-v8a
     mkdir -p game/assets
-    cp libmcpelauncherlegacyarm64-v8a.so game/lib/arm64-v8a/libminecraftpe.so
-    file libmcpelauncherlegacyarm64-v8a.so
+    #cp libmcpelauncherlegacyarm64-v8a.so game/lib/arm64-v8a/libminecraftpe.so
+    #file libmcpelauncherlegacyarm64-v8a.so
+    cp libmyapplication.so game/lib/arm64-v8a/libminecraftpe.so
     git clone https://github.com/openssl/openssl.git -b openssl-3.1
     ssldir="$PWD/ssl"
     cd openssl
