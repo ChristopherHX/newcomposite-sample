@@ -11,7 +11,8 @@ task:
     git -C mcpelauncher-manifest/mcpelauncher-linker/bionic checkout m1-dev
     mkdir -p game/lib/arm64-v8a
     mkdir -p game/assets
-    cp libc++_shared.so game/lib/arm64-v8a/libc++_shared.so
+    # Test a c only lib, libc++_shared crashs somewhere after calling std::__ndk1::DoIOSInit::DoIOSInit()
+    # cp libc++_shared.so game/lib/arm64-v8a/libc++_shared.so
     cp libminecraftpe.so game/lib/arm64-v8a/libminecraftpe.so
     git clone https://github.com/openssl/openssl.git -b openssl-3.1
     ssldir="$PWD/ssl"
