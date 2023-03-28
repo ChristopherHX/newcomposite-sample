@@ -3,20 +3,12 @@ macos_instance:
 
 task:
   script: |
-    echo "Hello World from macOS!"
-    uname -a
-    csrutil status
-    # cat > main.cpp << EOF
-    clang++ main.cpp -o main
-    ./main
-    # EOF
-    exit 0
     git clone https://github.com/minecraft-linux/mcpelauncher-manifest
     git -C mcpelauncher-manifest submodule update --init --recursive
-    git -C mcpelauncher-manifest/mcpelauncher-linker fetch origin refs/heads/m1-dev:m1-dev
-    git -C mcpelauncher-manifest/mcpelauncher-linker checkout m1-dev
-    git -C mcpelauncher-manifest/mcpelauncher-linker/bionic fetch origin refs/heads/m1-dev-verbose:m1-dev-verbose
-    git -C mcpelauncher-manifest/mcpelauncher-linker/bionic checkout m1-dev-verbose
+    #git -C mcpelauncher-manifest/mcpelauncher-linker fetch origin refs/heads/m1-dev:m1-dev
+    #git -C mcpelauncher-manifest/mcpelauncher-linker checkout m1-dev
+    git -C mcpelauncher-manifest/mcpelauncher-linker/bionic fetch origin refs/heads/m1-dev2:m1-dev
+    git -C mcpelauncher-manifest/mcpelauncher-linker/bionic checkout m1-dev
     #curl -LO https://github.com/ChristopherHX/mcpelauncherlegacy/releases/download/0.0.3/libmcpelauncherlegacyarm64-v8a.so
     mkdir -p game/lib/arm64-v8a
     mkdir -p game/assets
