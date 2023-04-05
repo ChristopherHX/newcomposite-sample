@@ -9,9 +9,9 @@
 bool skipcrash = false;
 
 void handler(int, siginfo_t *info, ucontext_t *uap) {
-  printf("crash test\n");
-  printf("prev instruction %x", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 4));
-  printf("current instruction %x", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc));
+  printf("crash test pc %llx\n", (long long)uap->uc_mcontext->__ss.__pc);
+  printf("prev instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 4));
+  printf("current instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc));
   if(skipcrash) {
     uap->uc_mcontext->__ss.__pc += 4;
     printf("try to continue\n");
