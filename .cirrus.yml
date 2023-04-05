@@ -26,3 +26,4 @@ task:
     ./build/mcpelauncher-client/mcpelauncher-client --help || :
     ./build/mcpelauncher-client/mcpelauncher-client --version || :
     ./build/mcpelauncher-client/mcpelauncher-client -dg game -df || :
+    bash -c 'echo "run -dg game -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client
