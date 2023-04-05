@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <signal.h>
+#include "backward.hpp"
 
 bool skipcrash = false;
 
@@ -12,6 +13,15 @@ void handler(int, siginfo_t *info, ucontext_t *uap) {
   printf("crash test pc %llx\n", (long long)uap->uc_mcontext->__ss.__pc);
   printf("prev instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 4));
   printf("current instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc));
+  if (error_addr) {
+    st.load_from(error_addr, 32, reinterpret_cast<void *>(uap), info->si_addr);
+  } else {
+    st.load_here(32, reinterpret_cast<void *>(uap), info->si_addr);
+  }
+
+  backward::Printer printer;
+  printer.address = true;
+  printer.print(st, stderr);
   if(skipcrash) {
     uap->uc_mcontext->__ss.__pc += 4;
     printf("try to continue\n");
