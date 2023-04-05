@@ -6,10 +6,18 @@
 #include <stdint.h>
 #include <signal.h>
 
+bool skipcrash = false;
+
 void handler(int, siginfo_t *info, ucontext_t *uap) {
   printf("crash test\n");
-  uap->uc_mcontext->__ss.__pc += 4;
-  printf("try to continue\n");
+  if(skipcrash) {
+    uap->uc_mcontext->__ss.__pc += 4;
+    printf("try to continue\n");
+  } else {
+    skipcrash = true;
+    uap->uc_mcontext->__ss.__pc -= 4;
+    printf("simulate failed patch\n");
+  }
 }
 
 int main() {
