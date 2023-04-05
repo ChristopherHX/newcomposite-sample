@@ -3,29 +3,5 @@ macos_instance:
 
 task:
   script: |
-    git clone https://github.com/minecraft-linux/mcpelauncher-manifest
-    git -C mcpelauncher-manifest submodule update --init --recursive
-    #git -C mcpelauncher-manifest/mcpelauncher-linker fetch origin refs/heads/m1-dev:m1-dev
-    #git -C mcpelauncher-manifest/mcpelauncher-linker checkout m1-dev
-    git -C mcpelauncher-manifest/mcpelauncher-linker/bionic fetch origin refs/heads/m1-dev2:m1-dev
-    git -C mcpelauncher-manifest/mcpelauncher-linker/bionic checkout m1-dev
-    mkdir -p game/lib/arm64-v8a
-    mkdir -p game/assets
-    # Test a c only lib, libc++_shared crashs somewhere after calling std::__ndk1::DoIOSInit::DoIOSInit()
-    # cp libc++_shared.so game/lib/arm64-v8a/libc++_shared.so
-    cp libminecraftpe.so game/lib/arm64-v8a/libminecraftpe.so
-    git clone https://github.com/openssl/openssl.git -b openssl-3.1
-    ssldir="$PWD/ssl"
-    cd openssl
-    ./config --prefix="$ssldir" --openssldir="$ssldir"
-    make -j4
-    make install_sw || sudo make install_sw
-    cd ..
-    cmake -B build -S mcpelauncher-manifest -DCMAKE_BUILD_TYPE=Debug "-DOPENSSL_ROOT_DIR=$ssldir" "-DOPENSSL_CRYPTO_LIBRARY=$ssldir/lib/libcrypto.dylib" -DBUILD_UI=OFF
-    cmake --build build --parallel
-    ./build/mcpelauncher-client/mcpelauncher-client --help || :
-    ./build/mcpelauncher-client/mcpelauncher-client --version || :
-    ./build/mcpelauncher-client/mcpelauncher-client -dg game -df || :
-    export OPENSSL_armcap=1
-    bash -c 'echo "run -dg game -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client
-    bash -c 'echo "run -dg game -df" && sleep 10 && echo "bt all" && cont && sleep 10 && echo "bt all" && cont && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client
+    clang++ main.cpp -o main
+    bash -c 'echo "run" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./main
