@@ -14,7 +14,7 @@ void handler(int, siginfo_t *info, ucontext_t *uap) {
   printf("prev instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 4));
   printf("current instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc));
   backward::StackTrace st;
-  st.load_from(uap->uc_mcontext->__ss.__pc, 32, reinterpret_cast<void *>(uap), info->si_addr);
+  st.load_from(reinterpret_cast<void *>(uap->uc_mcontext->__ss.__pc), 32, reinterpret_cast<void *>(uap), info->si_addr);
 
   backward::Printer printer;
   printer.address = true;
