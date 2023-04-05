@@ -8,7 +8,7 @@
 
 void handler(int, siginfo_t *info, ucontext_t *uap) {
   printf("crash test\n");
-  uap->uc_mcontext.__ss.__pc += 4;
+  uap->uc_mcontext->__ss.__pc += 4;
   printf("try to continue\n");
 }
 
