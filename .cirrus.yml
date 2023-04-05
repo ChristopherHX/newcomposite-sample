@@ -3,7 +3,6 @@ macos_instance:
 
 task:
   script: |
-    curl -L https://github.com/bombela/backward-cpp/raw/master/backward.hpp --output backward.hpp
     clang++ main.cpp -o main
     ./main || :
     bash -c 'echo "run" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./main

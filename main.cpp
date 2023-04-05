@@ -5,20 +5,17 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <signal.h>
-#include "backward.hpp"
 
 bool skipcrash = false;
 
 void handler(int, siginfo_t *info, ucontext_t *uap) {
   printf("crash test pc %llx\n", (long long)uap->uc_mcontext->__ss.__pc);
-  printf("prev instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 4));
+  printf("-4 instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 16));
+  printf("-3 instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 12));
+  printf("-2 instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 8));
+  printf("-1 instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 4));
   printf("current instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc));
-  backward::StackTrace st;
-  st.load_from(reinterpret_cast<void *>(uap->uc_mcontext->__ss.__pc), 32, reinterpret_cast<void *>(uap), info->si_addr);
-
-  backward::Printer printer;
-  printer.address = true;
-  printer.print(st, stderr);
+  printf("next instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc + 4));
   if(skipcrash) {
     uap->uc_mcontext->__ss.__pc += 4;
     printf("try to continue\n");
