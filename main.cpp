@@ -10,6 +10,9 @@ bool skipcrash = false;
 
 void handler(int, siginfo_t *info, ucontext_t *uap) {
   printf("crash test pc %llx\n", (long long)uap->uc_mcontext->__ss.__pc);
+  printf("-7 instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 28));
+  printf("-6 instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 24));
+  printf("-5 instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 20));
   printf("-4 instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 16));
   printf("-3 instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 12));
   printf("-2 instruction %x\n", *(uint32_t*)(intptr_t)(uap->uc_mcontext->__ss.__pc - 8));
