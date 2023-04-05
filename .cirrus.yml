@@ -4,4 +4,5 @@ macos_instance:
 task:
   script: |
     clang++ main.cpp -o main
+    ./main || :
     bash -c 'echo "run" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./main
