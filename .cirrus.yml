@@ -5,4 +5,4 @@ task:
   script: |
     clang++ main.cpp -o main
     ./main || :
-    bash -c 'echo "run" && sleep 5 && echo "bt all" && echo "disassemble -b -p" && echo "disassemble -b -C" && echo "cont" && sleep 2 && echo "bt all" && echo "disassemble -b -p" && echo "disassemble -b -C" && sleep 2 && echo "bt all" && echo "disassemble -b -p" && echo "disassemble -b -C" && echo "exit"' | lldb ./main
+    bash -c 'echo "run" && sleep 5 && echo "bt all" && echo "disassemble -b -p" && echo "disassemble -b -f" && echo "cont" && sleep 2 && echo "bt all" && echo "disassemble -b -f" && echo "disassemble -b -C" && sleep 2 && echo "bt all" && echo "disassemble -b -p" && echo "disassemble -b -f" && echo "exit"' | lldb ./main
