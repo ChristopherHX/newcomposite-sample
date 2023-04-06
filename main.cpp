@@ -40,9 +40,10 @@ int main() {
   sigaction(SIGSEGV, &act, 0);
   printf("initialize test\n");
   void** tcb;
-  void* pointer = nullptr;
+  void* pointer = (void*)(intptr_t)(-1);
+  void* pointer0 = (void*)(intptr_t)(-1);
   __asm__ volatile ("mrs %0, tpidrro_el0" : "=r" (tcb));
-  auto pointer0 = tcb[0x28 / sizeof(void*)];
+  pointer0 = tcb[0x28 / sizeof(void*)];
   __asm__ volatile ("mrs %0, tpidr_el0" : "=r" (tcb));
   // create a crash
   pointer = tcb[0x28 / sizeof(void*)];
