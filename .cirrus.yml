@@ -14,7 +14,7 @@ task:
     mkdir -p game/lib/arm64-v8a
     mkdir -p game/assets
     # Test a c only lib, libc++_shared crashs somewhere after calling std::__ndk1::DoIOSInit::DoIOSInit() Should be fixed now
-    cp libc++_shared.so game/lib/arm64-v8a/libc++_shared.so
+    #cp libc++_shared.so game/lib/arm64-v8a/libc++_shared.so
     cp libminecraftpe.so game/lib/arm64-v8a/libminecraftpe.so
     git clone https://github.com/openssl/openssl.git -b openssl-3.1
     ssldir="$PWD/ssl"
