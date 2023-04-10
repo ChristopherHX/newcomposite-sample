@@ -22,7 +22,7 @@ task:
     make -j4
     make install_sw || sudo make install_sw
     cd ..
-    cmake -B build -S mcpelauncher-manifest -DCMAKE_BUILD_TYPE=Debug "-DOPENSSL_ROOT_DIR=$ssldir" "-DOPENSSL_CRYPTO_LIBRARY=$ssldir/lib/libcrypto.dylib" -DBUILD_UI=OFF
+    cmake -B build -S mcpelauncher-manifest -DCMAKE_BUILD_TYPE=Debug "-DOPENSSL_ROOT_DIR=$ssldir" "-DOPENSSL_CRYPTO_LIBRARY=$ssldir/lib/libcrypto.dylib" -DBUILD_UI=OFF -DCMAKE_CXX_FLAGS=-DDEBUG_TCB_FAULT=1
     cmake --build build --parallel
     ./build/mcpelauncher-client/mcpelauncher-client --help || :
     ./build/mcpelauncher-client/mcpelauncher-client --version || :
