@@ -5,6 +5,10 @@ task:
   script: |
     bash ./get_gh_asset.sh ChristopherHX psychic-octo-engine v0.0.0 1.16.201.01.tar.xz
     tar xf 1.16.201.01.tar.xz
+    bash ./get_gh_asset.sh ChristopherHX psychic-octo-engine v0.0.0 1.19.70.0-stub.tar.xz
+    tar xf 1.19.70.0-stub.tar.xz
+    curl -L https://github.com/ChristopherHX/Buildbot/releases/download/v0.0.4669529706/libEGL.dylib --output libEGL.dylib 
+    curl -L https://github.com/ChristopherHX/Buildbot/releases/download/v0.0.4669529706/libGLESv2.dylib --output libGLESv2.dylib
     git clone https://github.com/minecraft-linux/mcpelauncher-manifest -b m1-dev
     git -C mcpelauncher-manifest submodule update --init --recursive
     git -C mcpelauncher-manifest/mcpelauncher-linker fetch origin refs/heads/m1-dev3:m1-dev
@@ -31,8 +35,10 @@ task:
     ./build/mcpelauncher-client/mcpelauncher-client -dg game -df || :
     export OPENSSL_armcap=1
     export MCPELAUNCHER_LINKER_VERBOSITY=0
+    export LD_LIBRARY_PATH=$PWD
     bash -c 'echo "run -dg game -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
     bash -c 'echo "run -dg 1.16.201.01 -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
+    bash -c 'echo "run -dg 1.19.70.0-stub -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
     export MCPELAUNCHER_LINKER_COPY_INDIRECT=0
     bash -c 'echo "run -dg game -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
     bash -c 'echo "run -dg 1.16.201.01 -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
