@@ -3,7 +3,7 @@ macos_instance:
 
 task:
   script: |
-    curl -H "Authorization: token $TOKEN" -L https://github.com/ChristopherHX/psychic-octo-engine/releases/download/1.16.201.01.tar.xz --output 1.16.201.01.tar.xz
+    bash ./get_gh_asset.sh ChristopherHX psychic-octo-engine v0.0.0 1.16.201.01.tar.xz
     tar xf 1.16.201.01.tar.xz
     git clone https://github.com/minecraft-linux/mcpelauncher-manifest -b m1-dev
     git -C mcpelauncher-manifest submodule update --init --recursive
@@ -33,4 +33,4 @@ task:
     bash -c 'echo "run -dg game -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
     bash -c 'echo "run -dg 1.16.201.01 -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
   env:
-    TOKEN: ENCRYPTED[a125837e10055e87275efc839344d69101fc9c86ff8a5726bc07b6f5d2606c4238af25b0d6233e9bc01e44d1a5f1a705]
+    GITHUB_API_TOKEN: ENCRYPTED[a125837e10055e87275efc839344d69101fc9c86ff8a5726bc07b6f5d2606c4238af25b0d6233e9bc01e44d1a5f1a705]
