@@ -9,8 +9,8 @@ task:
     git -C mcpelauncher-manifest submodule update --init --recursive
     git -C mcpelauncher-manifest/mcpelauncher-linker fetch origin refs/heads/m1-dev3:m1-dev
     git -C mcpelauncher-manifest/mcpelauncher-linker checkout m1-dev
-    #git -C mcpelauncher-manifest/mcpelauncher-linker/bionic fetch origin refs/heads/m1-dev4:m1-dev
-    #git -C mcpelauncher-manifest/mcpelauncher-linker/bionic checkout m1-dev
+    git -C mcpelauncher-manifest/mcpelauncher-linker/bionic fetch origin refs/heads/m1-dev4:m1-dev
+    git -C mcpelauncher-manifest/mcpelauncher-linker/bionic checkout m1-dev
     #git -C mcpelauncher-manifest/mcpelauncher-core fetch origin refs/heads/m1-dev:m1-dev
     #git -C mcpelauncher-manifest/mcpelauncher-core checkout m1-dev
     mkdir -p game/lib/arm64-v8a
@@ -30,7 +30,7 @@ task:
     ./build/mcpelauncher-client/mcpelauncher-client --version || :
     ./build/mcpelauncher-client/mcpelauncher-client -dg game -df || :
     export OPENSSL_armcap=1
-    export MCPELAUNCHER_LINKER_VERBOSITY=2
+    export MCPELAUNCHER_LINKER_VERBOSITY=0
     bash -c 'echo "run -dg game -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
     bash -c 'echo "run -dg 1.16.201.01 -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
   env:
