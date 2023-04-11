@@ -7,6 +7,8 @@ task:
     tar xf 1.16.201.01.tar.xz
     bash ./get_gh_asset.sh ChristopherHX psychic-octo-engine v0.0.0 1.19.70.0-stub.tar.xz
     tar xf 1.19.70.0-stub.tar.xz
+    bash ./get_gh_asset.sh ChristopherHX psychic-octo-engine v0.0.0 1.19.70.02.tar.xz
+    tar xf 1.19.70.02.tar.xz
     curl -L https://github.com/ChristopherHX/Buildbot/releases/download/v0.0.4669529706/libEGL.dylib --output libEGL.dylib 
     curl -L https://github.com/ChristopherHX/Buildbot/releases/download/v0.0.4669529706/libGLESv2.dylib --output libGLESv2.dylib
     git clone https://github.com/minecraft-linux/mcpelauncher-manifest -b m1-dev
@@ -30,7 +32,7 @@ task:
     make -j4
     make install_sw || sudo make install_sw
     cd ..
-    cmake -B build -S mcpelauncher-manifest -DCMAKE_BUILD_TYPE=Debug "-DOPENSSL_ROOT_DIR=$ssldir" "-DOPENSSL_CRYPTO_LIBRARY=$ssldir/lib/libcrypto.dylib" -DBUILD_UI=OFF -DCMAKE_CXX_FLAGS=-DDEBUG_TCB_FAULT=1
+    cmake -B build -S mcpelauncher-manifest -DCMAKE_BUILD_TYPE=Debug "-DOPENSSL_ROOT_DIR=$ssldir" "-DOPENSSL_CRYPTO_LIBRARY=$ssldir/lib/libcrypto.dylib" -DBUILD_UI=OFF -DCMAKE_CXX_FLAGS=-DDEBUG_TCB_FAULT=1 -DJNIVM_ENABLE_TRACE=ON
     cmake --build build --parallel
     ./build/mcpelauncher-client/mcpelauncher-client --help || :
     ./build/mcpelauncher-client/mcpelauncher-client --version || :
@@ -41,6 +43,7 @@ task:
     bash -c 'echo "run -dg game -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
     bash -c 'echo "run -dg 1.16.201.01 -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
     bash -c 'echo "run -dg 1.19.70.0-stub -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
+    bash -c 'echo "run -dg 1.19.70.02 -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
     export MCPELAUNCHER_LINKER_COPY_INDIRECT=0
     bash -c 'echo "run -dg game -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
     bash -c 'echo "run -dg 1.16.201.01 -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
