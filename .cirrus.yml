@@ -8,7 +8,10 @@ task:
     csrutil status
     # cat > main.cpp << EOF
     clang++ main.cpp -o main
-    ./main
+    ./main || :
+    bash -c "echo 'run test me' && sleep 10 && bt all && exit" | lldb ./main || :
+    bash -c "echo 'run' && sleep 10 && bt all && exit" | lldb ./main || :
+    
     # EOF
     exit 0
     git clone https://github.com/minecraft-linux/mcpelauncher-manifest

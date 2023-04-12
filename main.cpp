@@ -21,7 +21,7 @@ uint32_t* c_get_memory(uint32_t size) {
     return addr;
 }
 
-int main() {
+int main(int argc, char**argv) {
   pthread_jit_write_protect_np(0);
   auto mem = c_get_memory(16384 * 100);
   printf("c_get_memory %d\n", (int)(intptr_t)mem);
@@ -43,4 +43,8 @@ int main() {
   fixedaddr[1] = 15;
   printf("mem[0] %d, mem[1] %d\n", (int)mem[0], (int)mem[1]);
   printf("fixedaddr[0] %d, fixedaddr[1] %d\n", (int)fixedaddr[0], (int)fixedaddr[1]);
+  if(argc > 1) {
+    pthread_jit_write_protect_np(0);
+    ((void(*)())&mem[2])();
+  }
 }
