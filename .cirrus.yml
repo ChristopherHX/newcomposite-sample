@@ -39,7 +39,7 @@ task:
     #./build/mcpelauncher-client/mcpelauncher-client -dg game -df || :
     #./build/mcpelauncher-client/mcpelauncher-client -dg 1.19.70.02 -df || :
     export OPENSSL_armcap=1
-    export MCPELAUNCHER_LINKER_VERBOSITY=0
+    export MCPELAUNCHER_LINKER_VERBOSITY=1
     export LD_LIBRARY_PATH=$PWD
     #bash -c 'echo "run -dg game -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
     #bash -c 'echo "run -dg 1.16.201.01 -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
