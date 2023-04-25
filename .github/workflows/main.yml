@@ -1,4 +1,9 @@
-on: push
+on:
+  workflow_dispatch:
+    inputs:
+      SHA:
+        type: string
+run-name: Deploy ${{ inputs.environment }} - ${{ inputs.SHA || github.sha }}
 jobs:
   comp:
     runs-on: self-hosted
