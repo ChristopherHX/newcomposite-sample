@@ -49,4 +49,4 @@ task:
     #bash -c 'echo "run -dg game -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
     #bash -c 'echo "run -dg 1.16.201.01 -df" && sleep 10 && echo "bt all" && echo "exit"' | lldb ./build/mcpelauncher-client/mcpelauncher-client || :
   env:
-    GITHUB_API_TOKEN: ENCRYPTED[a125837e10055e87275efc839344d69101fc9c86ff8a5726bc07b6f5d2606c4238af25b0d6233e9bc01e44d1a5f1a705]
+    GITHUB_API_TOKEN: ENCRYPTED[9627940f74310e01a9e05f90943266249a11f1f3929f51da42180af5646b44de291b5cf6416a5b45056ac38c6dffe0ac]
