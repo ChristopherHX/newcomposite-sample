@@ -3,6 +3,7 @@ macos_instance:
 
 task:
   script: |
+    mkdir -p "~/Library/Application Support/mcpelauncher"
     #bash ./get_gh_asset.sh ChristopherHX psychic-octo-engine v0.0.0 1.16.201.01.tar.xz
     #tar xf 1.16.201.01.tar.xz
     #bash ./get_gh_asset.sh ChristopherHX psychic-octo-engine v0.0.0 1.19.70.0-stub.tar.xz
