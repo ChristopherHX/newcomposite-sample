@@ -21,6 +21,10 @@ task:
     #git -C mcpelauncher-manifest/mcpelauncher-core checkout m1-dev
     #git -C mcpelauncher-manifest/libc-shim fetch origin refs/heads/m1-dev:m1-dev
     #git -C mcpelauncher-manifest/libc-shim checkout m1-dev
+    git -C mcpelauncher-manifest/file-util fetch origin HEAD
+    git -C mcpelauncher-manifest/file-util checkout FETCH_HEAD
+    git -C mcpelauncher-manifest/mcpelauncher-client fetch origin HEAD
+    git -C mcpelauncher-manifest/mcpelauncher-client checkout FETCH_HEAD
     mkdir -p game/lib/arm64-v8a
     mkdir -p game/assets
     cp libc++_shared.so game/lib/arm64-v8a/libc++_shared.so
