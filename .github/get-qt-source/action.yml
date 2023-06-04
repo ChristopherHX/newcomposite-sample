@@ -2,9 +2,9 @@ inputs:
   module:
     default: "qtbase"
   major:
-    default: "6.2"
+    default: "6.3"
   minor:
-    default: "0-beta3"
+    default: "2"
   # dest:
   #   default: ${{ github.workspace }}
 runs:

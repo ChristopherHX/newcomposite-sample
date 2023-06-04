@@ -1,0 +1,89 @@
+on:
+  workflow_dispatch:
+    inputs:
+      CacheNumber:
+        type: string
+        default: "1"
+  workflow_call:
+    inputs:
+      CacheNumber:
+        type: string
+        default: "1"
+jobs:
+  buildqt6-webengine:
+    runs-on: macos-latest
+    env:
+      NODE_PATH: ${{github.workspace}}/.github/node_modules
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
+    - run: sudo mkdir -p /opt/qt6 && sudo tar -xJf $PWD/qt6.tar.xz -C /opt/qt6
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+    - uses: actions/github-script@v4
+      with:
+        github-token: which?
+        script: |
+          var path = require('path');
+          core.addPath(path.join(process.cwd(), '.github/helper'));
+          core.exportVariable('CC', 'wclang-mac');
+          core.exportVariable('CXX', 'wclang++-mac');
+    - uses: actions/github-script@v4
+      with:
+        github-token: which?
+        script: |
+          const cache = require('@actions/cache');
+          const paths = [
+              'build-qtwebengine',
+          ]
+          var ck = ${{ inputs.CacheNumber }};
+          const key = 'mac-build-qtwebengine-' + ck + '-' + Date.now();
+          var restoreKeys = [ 'mac-build-qtwebengine-' ];
+          for(var i = 0; i < ck; i++) {
+            restoreKeys.unshift('mac-build-qtwebengine-' + ck + '-');
+          }
+          const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
+          if(cacheKey) {
+            console.log("Restored key: " + cacheKey);
+            core.setOutput('success', 'true');
+          }
+      id: restore-cache
+    - uses: ./.github/get-qt-source
+      if: ${{ steps.restore-cache.outputs.success == 'true' }}
+      with:
+        module: qtwebengine
+    - uses: ./.github/continue-build-qtmodule
+      id: build1
+      if: ${{ steps.restore-cache.outputs.success == 'true' }}
+      with:
+        module: qtwebengine
+      continue-on-error: true
+      timeout-minutes: 300
+    - uses: ./.github/build-qtmodule
+      id: build2
+      if: ${{ steps.restore-cache.outputs.success != 'true' }}
+      with:
+        module: qtwebengine
+      continue-on-error: true
+      timeout-minutes: 300
+    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+      if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
+    - uses: actions/upload-artifact@v3
+      if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
+      with:
+        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg-qtwebengine
+        path: /opt/qt6.tar.xz
+    - uses: actions/github-script@v4
+      with:
+        github-token: which?
+        script: |
+          const cache = require('@actions/cache');
+          const paths = [
+              'build-qtwebengine',
+          ]
+          const key = 'mac-build-qtwebengine-${{ inputs.CacheNumber }}-' + Date.now();
+          const cacheId = await cache.saveCache(paths, key)
+      if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}

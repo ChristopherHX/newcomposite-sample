@@ -1,82 +1,16 @@
 name: build-qt6
 on: push
 jobs:
-  libcpp:
-    if: 'false'
-    runs-on: ${{ matrix.OS }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - OS: macos-latest
-            version: '10.10'
-            sdkroot: ../MacOSX-SDKs/MacOSX10.10.sdk
-            arch: 'x86_64'
-          - OS: macos-latest
-            version: '10.10'
-            sdkroot: ../MacOSX-SDKs/MacOSX10.10.sdk
-            arch: 'i386'
-            llvmflags: -DLIBCXX_BUILD_32_BITS=ON -DLIBCXXABI_BUILD_32_BITS=ON -DLLVM_BUILD_32_BITS=ON
-    env:
-      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.version }}
-      cache-name: cache-libcpp-${{ matrix.OS }}-${{ matrix.version }}-${{ matrix.arch }}
-    steps:
-    - name: Cache libc++
-      id: cache
-      uses: actions/cache@v2
-      with:
-        path: output
-        key: ${{ env.cache-name }}
-    - uses: actions/checkout@v1
-      if: ${{ steps.cache.outputs.cache-hit != 'true' && startsWith(matrix.OS, 'macOS') && matrix.sdkroot != '' && !startsWith(matrix.sdkroot, '/') }}
-      with:
-        repository: phracker/MacOSX-SDKs
-        ref: refs/heads/master
-    - name: Install Deps
-      if: ${{ steps.cache.outputs.cache-hit != 'true' && matrix.deps != '' }}
-      run: ${{ matrix.deps }}
-    - name: Build libc++
-      if: steps.cache.outputs.cache-hit != 'true'
-      shell: pwsh
-      run: |
-        if ('${{ matrix.sdkroot }}' -ne '') {
-          if ('${{ matrix.sdkroot }}'.StartsWith('/')) {
-            $Env:SDKROOT = '${{ matrix.sdkroot }}'
-          } else {
-            $Env:SDKROOT = '${{ github.workspace }}/${{ matrix.sdkroot }}'
-          }
-        }
-        git clone https://github.com/llvm/llvm-project.git llvm -b release/10.x
-        $INSDIR = (Get-Location).ToString() + "/output"
-        mkdir build
-        pushd build
-        cmake ../llvm/llvm -DLLVM_ENABLE_PROJECTS="libcxx;libcxxabi" -DCMAKE_BUILD_TYPE=Release -DLLVM_BUILD_TOOLS=False -DLLVM_INCLUDE_TOOLS=False -DLLVM_INCLUDE_EXAMPLES=False -DLLVM_INCLUDE_TESTS=False -DLLVM_INCLUDE_DOCS=False -DLLVM_ENABLE_OCAMLDOC=False ('-DCMAKE_INSTALL_PREFIX=' + $INSDIR) ${{ matrix.llvmflags}}
-        make install-cxx install-cxxabi -j4
-        tar -cJf libcpp.tar.xz -C output .
-    - name: Upload Binary
-      uses: actions/upload-artifact@v2
-      with:
-        name: libcpp-${{ matrix.OS }}-${{ matrix.version }}-${{ matrix.arch }}
-        path: libcpp.tar.xz
   buildqt6:
-    # needs: libcpp
-    runs-on: macos-latest
+´    runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
       with:
         node-version: '16'
-    - uses: actions/github-script@v4
-      with:
-        github-token: which?
-        script: |
-          var path = require('path');
-          core.addPath(path.join(process.cwd(), '.github/helper'));
-          core.exportVariable('CC', 'wclang-mac');
-          core.exportVariable('CXX', 'wclang++-mac');
     - uses: ./.github/build-qtbase
     - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: qtbase
         path: /opt/qt6.tar.xz
@@ -84,7 +18,7 @@ jobs:
       with:
         module: qtshadertools
     - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: qtbase-qtshadertools
         path: /opt/qt6.tar.xz
@@ -92,7 +26,7 @@ jobs:
       with:
         module: qtdeclarative
     - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: qtbase-qtshadertools-qtdeclarative
         path: /opt/qt6.tar.xz
@@ -100,7 +34,7 @@ jobs:
       with:
         module: qtwebchannel
     - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel
         path: /opt/qt6.tar.xz
@@ -108,163 +42,27 @@ jobs:
       with:
         module: qtsvg
     - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
         path: /opt/qt6.tar.xz
-  buildqt6-webengine:
-    runs-on: macos-latest
-    env:
-      NODE_PATH: ${{github.workspace}}/.github/node_modules
+  buildqt6-webengine1:
     needs: buildqt6
-    steps:
-    - uses: actions/download-artifact@v2
-      with:
-        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
-    - run: sudo mkdir -p /opt/qt6 && sudo tar -xJf $PWD/qt6.tar.xz -C /opt/qt6
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-    - uses: actions/github-script@v4
-      with:
-        github-token: which?
-        script: |
-          var path = require('path');
-          core.addPath(path.join(process.cwd(), '.github/helper'));
-          core.exportVariable('CC', 'wclang-mac');
-          core.exportVariable('CXX', 'wclang++-mac');
-    - uses: actions/github-script@v4
-      with:
-        github-token: which?
-        script: |
-          const cache = require('@actions/cache');
-          const paths = [
-              'build-qtwebengine',
-          ]
-          const key = 'mac-build-qtwebengine-3-' + Date.now();
-          const restoreKeys = [
-              'mac-build-qtwebengine-2-',
-              'mac-build-qtwebengine-1-',
-              'mac-build-qtwebengine-',
-          ]
-          const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
-          if(cacheKey) {
-            console.log("Restored key: " + cacheKey);
-            core.setOutput('success', 'true');
-          }
-      id: restore-cache
-    - uses: ./.github/get-qt-source
-      if: ${{ steps.restore-cache.outputs.success == 'true' }}
-      with:
-        module: qtwebengine
-    - uses: ./.github/continue-build-qtmodule
-      id: build1
-      if: ${{ steps.restore-cache.outputs.success == 'true' }}
-      with:
-        module: qtwebengine
-      continue-on-error: true
-      timeout-minutes: 300
-    - uses: ./.github/build-qtmodule
-      id: build2
-      if: ${{ steps.restore-cache.outputs.success != 'true' }}
-      with:
-        module: qtwebengine
-      continue-on-error: true
-      timeout-minutes: 300
-    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
-      if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
-    - uses: actions/upload-artifact@v2
-      if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
-      with:
-        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg-qtwebengine
-        path: /opt/qt6.tar.xz
-    - uses: actions/github-script@v4
-      with:
-        github-token: which?
-        script: |
-          const cache = require('@actions/cache');
-          const paths = [
-              'build-qtwebengine',
-          ]
-          const key = 'mac-build-qtwebengine-3-' + Date.now();
-          const cacheId = await cache.saveCache(paths, key)
-      if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
+    uses: ./.github/workflows/build-webengine.yml
+    with:
+      CacheNumber: "1"
   buildqt6-webengine2:
-    runs-on: macos-latest
-    env:
-      NODE_PATH: ${{github.workspace}}/.github/node_modules
-    needs: buildqt6-webengine
-    steps:
-    - uses: actions/download-artifact@v2
-      with:
-        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
-    - run: sudo mkdir -p /opt/qt6 && sudo tar -xJf $PWD/qt6.tar.xz -C /opt/qt6
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-    - uses: actions/github-script@v4
-      with:
-        github-token: which?
-        script: |
-          var path = require('path');
-          core.addPath(path.join(process.cwd(), '.github/helper'));
-          core.exportVariable('CC', 'wclang-mac');
-          core.exportVariable('CXX', 'wclang++-mac');
-    - uses: actions/github-script@v4
-      with:
-        github-token: which?
-        script: |
-          const cache = require('@actions/cache');
-          const paths = [
-              'build-qtwebengine',
-          ]
-          const key = 'mac-build-qtwebengine-3-' + Date.now();
-          const restoreKeys = [
-              'mac-build-qtwebengine-3-',
-              'mac-build-qtwebengine-2-',
-              'mac-build-qtwebengine-1-',
-              'mac-build-qtwebengine-',
-          ]
-          const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
-          if(cacheKey) {
-            core.setOutput('success', 'true');
-          }
-      id: restore-cache
-    - uses: ./.github/get-qt-source
-      if: ${{ steps.restore-cache.outputs.success == 'true' }}
-      with:
-        module: qtwebengine
-    - uses: ./.github/continue-build-qtmodule
-      id: build1
-      if: ${{ steps.restore-cache.outputs.success == 'true' }}
-      with:
-        module: qtwebengine
-      continue-on-error: true
-      timeout-minutes: 300
-    - uses: ./.github/build-qtmodule
-      id: build2
-      if: ${{ steps.restore-cache.outputs.success != 'true' }}
-      with:
-        module: qtwebengine
-      continue-on-error: true
-      timeout-minutes: 300
-    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
-      if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
-    - uses: actions/upload-artifact@v2
-      if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
-      with:
-        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg-qtwebengine
-        path: /opt/qt6.tar.xz
-    - uses: actions/github-script@v4
-      with:
-        github-token: which?
-        script: |
-          const cache = require('@actions/cache');
-          const paths = [
-              'build-qtwebengine',
-          ]
-          const key = 'mac-build-qtwebengine-4-' + Date.now();
-          const cacheId = await cache.saveCache(paths, key)
-      if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
+    needs: buildqt6-webengine1
+    uses: ./.github/workflows/build-webengine.yml
+    with:
+      CacheNumber: "2"
+  buildqt6-webengine3:
+    needs: buildqt6-webengine2
+    uses: ./.github/workflows/build-webengine.yml
+    with:
+      CacheNumber: "3"
+  buildqt6-webengine4:
+    needs: buildqt6-webengine3
+    uses: ./.github/workflows/build-webengine.yml
+    with:
+      CacheNumber: "4"
