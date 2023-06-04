@@ -9,6 +9,8 @@ on:
       CacheNumber:
         type: string
         default: "1"
+env:
+  CMAKE_BUILD_PARALLEL_LEVEL: 3
 jobs:
   buildqt6-webengine:
     runs-on: macos-latest
@@ -23,14 +25,6 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: '16'
-    - uses: actions/github-script@v4
-      with:
-        github-token: which?
-        script: |
-          var path = require('path');
-          core.addPath(path.join(process.cwd(), '.github/helper'));
-          core.exportVariable('CC', 'wclang-mac');
-          core.exportVariable('CXX', 'wclang++-mac');
     - uses: actions/github-script@v4
       with:
         github-token: which?
