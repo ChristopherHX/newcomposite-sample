@@ -30,7 +30,7 @@ jobs:
       NODE_PATH: ${{github.workspace}}/.github/node_modules
     steps:
     # For qtwebengine
-    - run: pip install html5lib
+    - run: pip3 install html5lib
     - uses: actions/cache/restore@v3
       if: ${{ inputs.CacheSource }}
       with:
