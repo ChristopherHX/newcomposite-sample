@@ -24,7 +24,7 @@ jobs:
         path: qt6.tar.xz
     - uses: actions/cache/save@v3
       with:
-        name: qtbase
+        key: qtbase
         path: qt6.tar.xz
   qtshadertools:
     if: "!(cancelled() || failure())"
