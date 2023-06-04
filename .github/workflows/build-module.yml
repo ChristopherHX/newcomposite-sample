@@ -83,7 +83,7 @@ jobs:
       timeout-minutes: 300
     - run: sudo tar -cJf $PWD/qt6.tar.xz qt6.tar.xz -C /opt/qt6 .
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
-    - uses: actions/cache/restore@v3
+    - uses: actions/cache/save@v3
       if: ${{ inputs.CacheSource && (steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
       with:
         path: qt6.tar.xz

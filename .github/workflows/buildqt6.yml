@@ -17,11 +17,15 @@ jobs:
       with:
         node-version: '16'
     - uses: ./.github/build-qtbase
-    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+    - run: sudo tar -cJf $PWD/qt6.tar.xz -C /opt/qt6 .
     - uses: actions/upload-artifact@v3
       with:
         name: qtbase
-        path: /opt/qt6.tar.xz
+        path: qt6.tar.xz
+    - uses: actions/cache/save@v3
+      with:
+        name: qtbase
+        path: qt6.tar.xz
   qtshadertools:
     if: "!(cancelled() || failure())"
     needs: qtbase
