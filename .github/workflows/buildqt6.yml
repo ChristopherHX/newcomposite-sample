@@ -1,5 +1,7 @@
 name: build-qt6
 on: push
+env:
+  CMAKE_BUILD_PARALLEL_LEVEL: 3
 jobs:
   buildqt6:
     runs-on: macos-latest
