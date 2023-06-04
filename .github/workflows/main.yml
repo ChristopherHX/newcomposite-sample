@@ -59,7 +59,7 @@ jobs:
       Module: qtsvg
       CacheNumber: "1"
   qtwebengine:
-    if: "!inputs.skip && !(cancelled() || failure())"
+    if: "!(cancelled() || failure())"
     strategy:
       matrix:
         _:
