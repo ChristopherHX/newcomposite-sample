@@ -27,7 +27,7 @@ jobs:
         key: qtbase
         path: qt6.tar.xz
   qtshadertools:
-    if: "!(cancelled() || failure())"
+    if: "!inputs.skip && !(cancelled() || failure())"
     needs: qtbase
     uses: ./.github/workflows/build-module.yml
     with:
@@ -35,7 +35,7 @@ jobs:
       Module: qtshadertools
       CacheNumber: "1"
   qtdeclarative:
-    if: "!(cancelled() || failure())"
+    if: "!inputs.skip && !(cancelled() || failure())"
     needs: qtshadertools
     uses: ./.github/workflows/build-module.yml
     with:
@@ -43,7 +43,7 @@ jobs:
       Module: qtdeclarative
       CacheNumber: "1"
   qtwebchannel:
-    if: "!(cancelled() || failure())"
+    if: "!inputs.skip && !(cancelled() || failure())"
     needs: qtdeclarative
     uses: ./.github/workflows/build-module.yml
     with:
@@ -51,7 +51,7 @@ jobs:
       Module: qtwebchannel
       CacheNumber: "1"
   qtsvg:
-    if: "!(cancelled() || failure())"
+    if: "!inputs.skip && !(cancelled() || failure())"
     needs: qtwebchannel
     uses: ./.github/workflows/build-module.yml
     with:
@@ -59,7 +59,7 @@ jobs:
       Module: qtsvg
       CacheNumber: "1"
   qtwebengine:
-    if: "!(cancelled() || failure())"
+    if: "!inputs.skip && !(cancelled() || failure())"
     strategy:
       matrix:
         _:
