@@ -2,7 +2,7 @@ name: build-qt6
 on: push
 jobs:
   buildqt6:
-´    runs-on: macos-latest
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
