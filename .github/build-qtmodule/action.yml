@@ -8,7 +8,7 @@ runs:
     with:
       module: ${{ inputs.module }}
   - name: Configure Qt
-    run: /opt/qt6/bin/qt-configure-module ${{ inputs.module }} -- -B build-${{ inputs.module }} -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DNinja_EXECUTABLE=$PWD/ninja
+    run: /opt/qt6/bin/qt-configure-module ${{ inputs.module }} -- -B build-${{ inputs.module }} -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DNinja_EXECUTABLE=$PWD/ninja -DNinja_VERSION=1.7.2
     shell: bash
   - name: Build Qt
     run: cmake --build build-${{ inputs.module }}
