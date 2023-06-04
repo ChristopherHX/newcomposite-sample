@@ -29,13 +29,6 @@ jobs:
     env:
       NODE_PATH: ${{github.workspace}}/.github/node_modules
     steps:
-    # For qtwebengine
-    - run: |
-        pip3 install html5lib
-        curl -LO https://github.com/ninja-build/ninja/releases/download/v1.11.1/ninja-mac.zip
-        unzip ninja-mac.zip
-        chmod +x ./ninja
-        echo "$PWD" >> $GITHUB_PATH
     - uses: actions/cache/restore@v3
       if: ${{ inputs.CacheSource }}
       with:
@@ -50,6 +43,13 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: '16'
+    # For qtwebengine
+    - run: |
+        pip3 install html5lib
+        curl -LO https://github.com/ninja-build/ninja/releases/download/v1.11.1/ninja-mac.zip
+        unzip ninja-mac.zip
+        chmod +x ./ninja
+        echo "$PWD" >> $GITHUB_PATH
     - uses: actions/github-script@v4
       with:
         github-token: which?
