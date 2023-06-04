@@ -87,7 +87,7 @@ jobs:
       if: ${{ inputs.CacheSource && (steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
       with:
         path: qt6.tar.xz
-        key: ${{ inputs.CacheSource }}
+        key: ${{ inputs.CacheSource }}-${{ inputs.module }}
     - uses: actions/upload-artifact@v3
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
       with:
