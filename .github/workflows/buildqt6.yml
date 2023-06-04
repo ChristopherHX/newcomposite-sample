@@ -1,9 +1,15 @@
 name: build-qt6
-on: push
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      skip:
+        type: boolean
 env:
   CMAKE_BUILD_PARALLEL_LEVEL: 3
 jobs:
-  buildqt6:
+  qtbase:
+    if: "!inputs.skip"
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
@@ -16,55 +22,51 @@ jobs:
       with:
         name: qtbase
         path: /opt/qt6.tar.xz
-    - uses: ./.github/build-qtmodule
-      with:
-        module: qtshadertools
-    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qtbase-qtshadertools
-        path: /opt/qt6.tar.xz
-    - uses: ./.github/build-qtmodule
-      with:
-        module: qtdeclarative
-    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qtbase-qtshadertools-qtdeclarative
-        path: /opt/qt6.tar.xz
-    - uses: ./.github/build-qtmodule
-      with:
-        module: qtwebchannel
-    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel
-        path: /opt/qt6.tar.xz
-    - uses: ./.github/build-qtmodule
-      with:
-        module: qtsvg
-    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
-        path: /opt/qt6.tar.xz
-  buildqt6-webengine1:
-    needs: buildqt6
-    uses: ./.github/workflows/build-webengine.yml
+  qtshadertools:
+    if: "!(cancelled() || failure())"
+    needs: qtbase
+    uses: ./.github/workflows/build-module.yml
     with:
+      CacheSource: qtbase
+      Module: qtshadertools
       CacheNumber: "1"
-  buildqt6-webengine2:
-    needs: buildqt6-webengine1
-    uses: ./.github/workflows/build-webengine.yml
+  qtdeclarative:
+    if: "!(cancelled() || failure())"
+    needs: qtshadertools
+    uses: ./.github/workflows/build-module.yml
     with:
-      CacheNumber: "2"
-  buildqt6-webengine3:
-    needs: buildqt6-webengine2
-    uses: ./.github/workflows/build-webengine.yml
+      CacheSource: qtbase-qtshadertools
+      Module: qtdeclarative
+      CacheNumber: "1"
+  qtwebchannel:
+    if: "!(cancelled() || failure())"
+    needs: qtdeclarative
+    uses: ./.github/workflows/build-module.yml
     with:
-      CacheNumber: "3"
-  buildqt6-webengine4:
-    needs: buildqt6-webengine3
-    uses: ./.github/workflows/build-webengine.yml
+      CacheSource: qtbase-qtshadertools-qtdeclarative
+      Module: qtwebchannel
+      CacheNumber: "1"
+  qtsvg:
+    if: "!(cancelled() || failure())"
+    needs: qtwebchannel
+    uses: ./.github/workflows/build-module.yml
     with:
-      CacheNumber: "4"
+      CacheSource: qtbase-qtshadertools-qtdeclarative-qtwebchannel
+      Module: qtsvg
+      CacheNumber: "1"
+  qtwebengine:
+    if: "!(cancelled() || failure())"
+    strategy:
+      matrix:
+        _:
+        - 0
+        - 1
+        - 2
+        - 3
+      max-parallel: 1
+    needs: qtsvg
+    uses: ./.github/workflows/build-module.yml
+    with:
+      CacheSource: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
+      Module: qtwebengine
+      CacheNumber: "1"

@@ -11,7 +11,7 @@ runs:
     run: /opt/qt6/bin/qt-configure-module ${{ inputs.module }} -- -B build-${{ inputs.module }} -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
     shell: bash
   - name: Build Qt
-    run: cmake --build build-${{ inputs.module }} --parallel
+    run: cmake --build build-${{ inputs.module }}
     shell: bash
   - name: Install Qt
     run: sudo cmake --install build-${{ inputs.module }}

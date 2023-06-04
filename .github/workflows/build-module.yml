@@ -1,25 +1,43 @@
 on:
   workflow_dispatch:
     inputs:
+      ArtifactSource:
+        type: string
+      CacheSource:
+        type: string
+      Module:
+        type: string
       CacheNumber:
         type: string
         default: "1"
   workflow_call:
     inputs:
+      ArtifactSource:
+        type: string
+      CacheSource:
+        type: string
+      Module:
+        type: string
       CacheNumber:
         type: string
         default: "1"
 env:
   CMAKE_BUILD_PARALLEL_LEVEL: 3
 jobs:
-  buildqt6-webengine:
+  build:
     runs-on: macos-latest
     env:
       NODE_PATH: ${{github.workspace}}/.github/node_modules
     steps:
-    - uses: actions/download-artifact@v2
+    - uses: actions/cache/restore@v3
+      if: ${{ inputs.CacheSource }}
       with:
-        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
+        path: qt6.tar.xz
+        key: ${{ inputs.CacheSource }}
+    - uses: actions/download-artifact@v2
+      if: ${{ inputs.ArtifactSource }}
+      with:
+        name: ${{ inputs.ArtifactSource }}
     - run: sudo mkdir -p /opt/qt6 && sudo tar -xJf $PWD/qt6.tar.xz -C /opt/qt6
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
@@ -31,13 +49,13 @@ jobs:
         script: |
           const cache = require('@actions/cache');
           const paths = [
-              'build-qtwebengine',
+              'build-${{ inputs.module }}',
           ]
           var ck = ${{ inputs.CacheNumber }};
-          const key = 'mac-build-qtwebengine-' + ck + '-' + Date.now();
-          var restoreKeys = [ 'mac-build-qtwebengine-' ];
+          const key = 'mac-build-${{ inputs.module }}-' + ck + '-' + Date.now();
+          var restoreKeys = [ 'mac-build-${{ inputs.module }}-' ];
           for(var i = 0; i < ck; i++) {
-            restoreKeys.unshift('mac-build-qtwebengine-' + ck + '-');
+            restoreKeys.unshift('mac-build-${{ inputs.module }}-' + ck + '-');
           }
           const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
           if(cacheKey) {
@@ -48,36 +66,41 @@ jobs:
     - uses: ./.github/get-qt-source
       if: ${{ steps.restore-cache.outputs.success == 'true' }}
       with:
-        module: qtwebengine
+        module: ${{ inputs.module }}
     - uses: ./.github/continue-build-qtmodule
       id: build1
       if: ${{ steps.restore-cache.outputs.success == 'true' }}
       with:
-        module: qtwebengine
+        module: ${{ inputs.module }}
       continue-on-error: true
       timeout-minutes: 300
     - uses: ./.github/build-qtmodule
       id: build2
       if: ${{ steps.restore-cache.outputs.success != 'true' }}
       with:
-        module: qtwebengine
+        module: ${{ inputs.module }}
       continue-on-error: true
       timeout-minutes: 300
-    - run: sudo tar -cJf /opt/qt6.tar.xz -C /opt/qt6 .
+    - run: sudo tar -cJf $PWD/qt6.tar.xz qt6.tar.xz -C /opt/qt6 .
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
+    - uses: actions/cache/restore@v3
+      if: ${{ inputs.CacheSource && (steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
+      with:
+        path: qt6.tar.xz
+        key: ${{ inputs.CacheSource }}
     - uses: actions/upload-artifact@v3
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
       with:
-        name: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg-qtwebengine
-        path: /opt/qt6.tar.xz
+        name: ${{ inputs.ArtifactSource || inputs.CacheSource }}-${{ inputs.module }}
+        path: qt6.tar.xz
     - uses: actions/github-script@v4
       with:
         github-token: which?
         script: |
           const cache = require('@actions/cache');
           const paths = [
-              'build-qtwebengine',
+              'build-${{ inputs.module }}',
           ]
-          const key = 'mac-build-qtwebengine-${{ inputs.CacheNumber }}-' + Date.now();
+          const key = 'mac-build-${{ inputs.module }}-${{ inputs.CacheNumber }}-' + Date.now();
           const cacheId = await cache.saveCache(paths, key)
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
