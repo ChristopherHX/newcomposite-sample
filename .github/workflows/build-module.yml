@@ -64,12 +64,12 @@ jobs:
           const paths = [
               'build-${{ inputs.module }}',
           ]
-          var ck = ${{ inputs.CacheNumber || '0' }} + 10;
+          var ck = ${{ inputs.CacheNumber || '0' }} + 5;
           var prefix = 'mac-build-${{ inputs.module }}-';
           core.setOutput('CachePrefix', prefix);
           const key = prefix + ck + '-' + Date.now();
           var restoreKeys = [ prefix ];
-          for(var i = 0; i < ck; i++) {
+          for(var i = (ck - 8) > 0 ? (ck - 8) : 0; i < ck; i++) {
             restoreKeys.unshift(prefix + ck + '-');
           }
           const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
