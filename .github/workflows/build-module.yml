@@ -64,16 +64,22 @@ jobs:
           const paths = [
               'build-${{ inputs.module }}',
           ]
-          var ck = ${{ inputs.CacheNumber }};
-          const key = 'mac-build-${{ inputs.module }}-' + ck + '-' + Date.now();
-          var restoreKeys = [ 'mac-build-${{ inputs.module }}-' ];
+          var ck = ${{ inputs.CacheNumber || '0' }} + 10;
+          var prefix = 'mac-build-${{ inputs.module }}-';
+          core.setOutput('CachePrefix', cacheKey);
+          const key = prefix + ck + '-' + Date.now();
+          var restoreKeys = [ prefix ];
           for(var i = 0; i < ck; i++) {
-            restoreKeys.unshift('mac-build-${{ inputs.module }}-' + ck + '-');
+            restoreKeys.unshift(prefix + ck + '-');
           }
           const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
           if(cacheKey) {
             console.log("Restored key: " + cacheKey);
             core.setOutput('success', 'true');
+            if(cacheKey.startsWith(prefix) && cacheKey.indexOf('-', prefix.length) !== -1) {
+              var cacheNo = parseInt(cacheKey.substring(prefix.length, cacheKey.indexOf('-', prefix.length))) + 1;
+              core.setOutput('CacheNumber', cacheNo);
+            }
           }
       id: restore-cache
     - uses: ./.github/get-qt-source
@@ -114,6 +120,6 @@ jobs:
           const paths = [
               'build-${{ inputs.module }}',
           ]
-          const key = 'mac-build-${{ inputs.module }}-${{ inputs.CacheNumber }}-' + Date.now();
+          const key = '${{ steps.restore-cache.outputs.CachePrefix }}-${{ steps.restore-cache.outputs.CacheNumber || inputs.CacheNumber }}-' + Date.now();
           const cacheId = await cache.saveCache(paths, key)
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
