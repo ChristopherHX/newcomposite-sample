@@ -113,7 +113,7 @@ jobs:
         name: ${{ inputs.ArtifactSource || inputs.CacheSource }}-${{ inputs.module }}
         path: qt6.tar.xz
     - run: |
-        pkill -signal SIGINT ninja
+        pkill -SIGINT ninja
     - uses: actions/github-script@v4
       with:
         github-token: which?
