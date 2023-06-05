@@ -120,9 +120,9 @@ jobs:
           const paths = [
               'build-${{ inputs.module }}',
           ]
-          const key = '${{ steps.restore-cache.outputs.CachePrefix }}-${{ steps.restore-cache.outputs.CacheNumber || inputs.CacheNumber }}-' + Date.now();
           while(true) {
             try {
+              const key = '${{ steps.restore-cache.outputs.CachePrefix }}${{ steps.restore-cache.outputs.CacheNumber || inputs.CacheNumber }}-' + Date.now();
               const cacheId = await cache.saveCache(paths, key);
               return;
             } catch(ex) {
