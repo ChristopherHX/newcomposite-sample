@@ -92,14 +92,14 @@ jobs:
       with:
         module: ${{ inputs.module }}
       continue-on-error: true
-      timeout-minutes: 5
+      timeout-minutes: 300
     - uses: ./.github/build-qtmodule
       id: build2
       if: ${{ steps.restore-cache.outputs.success != 'true' }}
       with:
         module: ${{ inputs.module }}
       continue-on-error: true
-      timeout-minutes: 5
+      timeout-minutes: 300
     - run: sudo tar -cJf $PWD/qt6.tar.xz qt6.tar.xz -C /opt/qt6 .
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
     - uses: actions/cache/save@v3
@@ -114,6 +114,7 @@ jobs:
         path: qt6.tar.xz
     - run: |
         pkill -SIGINT ninja
+      if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
     - uses: actions/github-script@v4
       with:
         github-token: which?
