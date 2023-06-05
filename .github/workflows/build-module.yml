@@ -92,14 +92,14 @@ jobs:
       with:
         module: ${{ inputs.module }}
       continue-on-error: true
-      timeout-minutes: 300
+      timeout-minutes: 10
     - uses: ./.github/build-qtmodule
       id: build2
       if: ${{ steps.restore-cache.outputs.success != 'true' }}
       with:
         module: ${{ inputs.module }}
       continue-on-error: true
-      timeout-minutes: 300
+      timeout-minutes: 10
     - run: sudo tar -cJf $PWD/qt6.tar.xz qt6.tar.xz -C /opt/qt6 .
       if: ${{ steps.build1.outcome == 'success' || steps.build2.outcome == 'success' }}
     - uses: actions/cache/save@v3
@@ -121,5 +121,12 @@ jobs:
               'build-${{ inputs.module }}',
           ]
           const key = '${{ steps.restore-cache.outputs.CachePrefix }}-${{ steps.restore-cache.outputs.CacheNumber || inputs.CacheNumber }}-' + Date.now();
-          const cacheId = await cache.saveCache(paths, key)
+          while(true) {
+            try {
+              const cacheId = await cache.saveCache(paths, key);
+              return;
+            } catch(ex) {
+              console.log("ex:" + ex);
+            }
+          }
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
