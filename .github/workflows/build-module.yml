@@ -44,6 +44,7 @@ jobs:
       with:
         node-version: '16'
     - uses: actions/setup-python@v4
+      id: setupp
       with:
         python-version: '3.10'
     # For qtwebengine
@@ -53,6 +54,8 @@ jobs:
         unzip ninja-mac.zip
         chmod +x ./ninja
         echo "$PWD" >> $GITHUB_PATH
+        rm /usr/local/bin/python3
+        sudo ln -s ${{ steps.setupp.outputs.python-path }} /usr/local/bin/python3
     - uses: actions/github-script@v4
       with:
         github-token: which?
