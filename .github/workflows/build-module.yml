@@ -63,6 +63,8 @@ jobs:
         tar xf "$PWD/../llvm.tar.xz" || tar -x -f "$PWD/../llvm.tar.xz"
         popd llvm
         echo "$PWD"/llvm/*/bin >> $GITHUB_PATH
+        echo "CC=clang" >> $GITHUB_ENV
+        echo "CXX=clang++" >> $GITHUB_ENV
     - uses: actions/github-script@v4
       with:
         github-token: which?
