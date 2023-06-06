@@ -62,7 +62,13 @@ jobs:
         pushd llvm
         tar xf "$PWD/../llvm.tar.xz" || tar -x -f "$PWD/../llvm.tar.xz"
         popd llvm
-        echo "$PWD"/llvm/*/bin >> $GITHUB_PATH
+        clang="/Applications/Xcode_14.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc"
+        echo "$clang"
+        clangxx="/Applications/Xcode_14.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++"
+        echo "$clangxx"
+        sudo rm -rf "$clang" "$clangxx"
+        sudo ln -s "$PWD"/llvm/*/bin/clang "$clang"
+        sudo ln -s "$PWD"/llvm/*/bin/clang++ "$clangxx"
     - uses: actions/github-script@v4
       with:
         github-token: which?
@@ -120,7 +126,7 @@ jobs:
         name: ${{ inputs.ArtifactSource || inputs.CacheSource }}-${{ inputs.module }}
         path: qt6.tar.xz
     - run: |
-        pkill -SIGINT ninja
+        pkill -SIGINT ninja || :
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
     - uses: actions/github-script@v4
       with:
