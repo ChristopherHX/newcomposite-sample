@@ -56,6 +56,17 @@ jobs:
         echo "$PWD" >> $GITHUB_PATH
         rm /usr/local/bin/python3
         sudo ln -s ${{ steps.setupp.outputs.python-path }} /usr/local/bin/python3
+        # Downgrade compiler webengine has issues with current apple clang
+        curl -L https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.6/clang+llvm-14.0.6-x86_64-apple-darwin.tar.xz --output llvm.tar.xz
+        mkdir -p llvm
+        tar -C llvm xf "$PWD/llvm.tar.xz"
+        clang="$(which clang)"
+        echo "$clang"
+        clangxx="$(which clang++)"
+        echo "$clangxx"
+        sudo rm "$clang" $clangxx"
+        sudo ln -s ./llvm/*/bin/clang "$clang"
+        sudo ln -s ./llvm/*/bin/clang++ "$clangxx"
     - uses: actions/github-script@v4
       with:
         github-token: which?
