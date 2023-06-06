@@ -59,7 +59,9 @@ jobs:
         # Downgrade compiler webengine has issues with current apple clang
         curl -L https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.6/clang+llvm-14.0.6-x86_64-apple-darwin.tar.xz --output llvm.tar.xz
         mkdir -p llvm
-        tar -C llvm xf "$PWD/llvm.tar.xz"
+        pushd llvm
+        tar xf "$PWD/../llvm.tar.xz" || tar -x -f "$PWD/../llvm.tar.xz"
+        popd llvm
         clang="$(which clang)"
         echo "$clang"
         clangxx="$(which clang++)"
