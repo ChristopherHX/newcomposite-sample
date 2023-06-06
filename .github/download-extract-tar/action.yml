@@ -15,5 +15,7 @@ runs:
   steps:
   - run: mkdir -p ${{ inputs.dest }}
     shell: bash
-  - run: curl -L ${{ inputs.url }} | tar -x${{ inputs.format == 'xz' && 'J' || inputs.format == 'gz' && 'z' }} --strip-components ${{ inputs.strip-components }} ${{ inputs.dest && format('-C {0}', inputs.dest) }}
+  - run: curl -L ${{ inputs.url }} | tar -x${{ inputs.format == 'xz' && 'J' || inputs.format == 'gz' && 'z' }} --strip-components ${{ inputs.strip-components }} ${{ inputs.dest && format('-C {0}', inputs.dest) }} || curl -L ${{ inputs.url }} | tar -x${{ inputs.format == 'xz' && 'J' || inputs.format == 'gz' && 'z' }} --strip-components ${{ inputs.strip-components }} ${{ inputs.dest && format('-C {0}', inputs.dest) }} || curl -L ${{ inputs.url }} | tar -x${{ inputs.format == 'xz' && 'J' || inputs.format == 'gz' && 'z' }} --strip-components ${{ inputs.strip-components }} ${{ inputs.dest && format('-C {0}', inputs.dest) }}
+
+
     shell: bash
