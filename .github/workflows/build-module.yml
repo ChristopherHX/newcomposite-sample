@@ -62,13 +62,7 @@ jobs:
         pushd llvm
         tar xf "$PWD/../llvm.tar.xz" || tar -x -f "$PWD/../llvm.tar.xz"
         popd llvm
-        clang="$(which clang)"
-        echo "$clang"
-        clangxx="$(which clang++)"
-        echo "$clangxx"
-        sudo rm -rf "$clang" "$clangxx"
-        sudo ln -s ./llvm/*/bin/clang "$clang"
-        sudo ln -s ./llvm/*/bin/clang++ "$clangxx"
+        echo "$PWD"/llvm/*/bin >> $GITHUB_PATH
     - uses: actions/github-script@v4
       with:
         github-token: which?
