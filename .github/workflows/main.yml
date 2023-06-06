@@ -58,19 +58,30 @@ jobs:
       CacheSource: qtbase-qtshadertools-qtdeclarative-qtwebchannel
       Module: qtsvg
       CacheNumber: "1"
+  qttranslations:
+    if: "!inputs.skip && !(cancelled() || failure())"
+    needs: qtsvg
+    uses: ./.github/workflows/build-module.yml
+    with:
+      CacheSource: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
+      Module: qttranslations
+      CacheNumber: "1"
   qtwebengine:
     if: "!(cancelled() || failure())"
     strategy:
       matrix:
         _:
+        - 1
+        - 2
+        - 3
         - 4
         - 5
         - 6
         - 7
       max-parallel: 1
-    needs: qtsvg
+    needs: qttranslations
     uses: ./.github/workflows/build-module.yml
     with:
-      CacheSource: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg
+      CacheSource: qtbase-qtshadertools-qtdeclarative-qtwebchannel-qtsvg-qttranslations
       Module: qtwebengine
       CacheNumber: "1"
