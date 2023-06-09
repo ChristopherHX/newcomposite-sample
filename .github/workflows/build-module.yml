@@ -58,6 +58,7 @@ jobs:
         sudo ln -s ${{ steps.setupp.outputs.python-path }} /usr/local/bin/python3
         # Downgrade compiler webengine has issues with current apple clang
         sudo xcode-select --switch /Applications/Xcode_13.1.app
+        xcode-select -print-path
     - uses: actions/github-script@v4
       with:
         github-token: which?
