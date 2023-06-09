@@ -16,6 +16,10 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: '16'
+    - run: |
+        # Downgrade compiler webengine has issues with current apple clang
+        sudo xcode-select --switch /Applications/Xcode_13.1.app
+        xcode-select -print-path
     - uses: ./.github/build-qtbase
     - run: sudo tar -cJf $PWD/qt6.tar.xz -C /opt/qt6 .
     - uses: actions/upload-artifact@v3
