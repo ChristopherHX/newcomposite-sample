@@ -57,25 +57,14 @@ jobs:
         rm /usr/local/bin/python3
         sudo ln -s ${{ steps.setupp.outputs.python-path }} /usr/local/bin/python3
         # Downgrade compiler webengine has issues with current apple clang
-        curl -L https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.6/clang+llvm-14.0.6-x86_64-apple-darwin.tar.xz --output llvm.tar.xz
-        mkdir -p llvm
-        pushd llvm
-        tar xf "$PWD/../llvm.tar.xz" || tar -x -f "$PWD/../llvm.tar.xz"
-        popd llvm
-        clang="/Applications/Xcode_14.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc"
-        echo "$clang"
-        clangxx="/Applications/Xcode_14.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++"
-        echo "$clangxx"
-        sudo rm -rf "$clang" "$clangxx"
-        sudo ln -s "$PWD"/llvm/*/bin/clang "$clang"
-        sudo ln -s "$PWD"/llvm/*/bin/clang++ "$clangxx"
+        sudo xcode-select --switch /Applications/Xcode_13.1.app
     - uses: actions/github-script@v4
       with:
         github-token: which?
         script: |
           const cache = require('@actions/cache');
           const paths = [
-              'build-${{ inputs.module }}',
+              'build-rebuild-1-${{ inputs.module }}',
           ]
           var ck = ${{ inputs.CacheNumber || '0' }} + 5;
           var prefix = 'mac-build-${{ inputs.module }}-';
@@ -83,7 +72,7 @@ jobs:
           const key = prefix + ck + '-' + Date.now();
           var restoreKeys = [ prefix ];
           for(var i = (ck - 8) > 0 ? (ck - 8) : 0; i < ck; i++) {
-            restoreKeys.unshift(prefix + ck + '-');
+            restoreKeys.unshift(prefix + i + '-');
           }
           const cacheKey = await cache.restoreCache(paths, key, restoreKeys)
           if(cacheKey) {
