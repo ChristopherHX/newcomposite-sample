@@ -65,7 +65,7 @@ jobs:
         script: |
           const cache = require('@actions/cache');
           const paths = [
-              'build-rebuild-1-${{ inputs.module }}',
+              'build-${{ inputs.module }}',
           ]
           var ck = ${{ inputs.CacheNumber || '0' }} + 5;
           var prefix = 'mac-build-${{ inputs.module }}-';
