@@ -95,7 +95,7 @@ jobs:
       with:
         module: ${{ inputs.module }}
       continue-on-error: true
-      timeout-minutes: 300
+      timeout-minutes: 3
     - uses: ./.github/build-qtmodule
       id: build2
       if: ${{ steps.restore-cache.outputs.success != 'true' }}
@@ -116,7 +116,8 @@ jobs:
         name: ${{ inputs.ArtifactSource || inputs.CacheSource }}-${{ inputs.module }}
         path: qt6.tar.xz
     - run: |
-        pkill -SIGINT ninja || :
+        pid="$(pgrep ninja)"
+        [[ "$pid" != "" ]] && kill -SIGINT "$pid" && lsof -p "$pid" +r 1 | awk '/^=/ { if (T++ >= 120) { exit 1 } }' || :
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
     - uses: actions/github-script@v4
       with:
