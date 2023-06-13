@@ -117,19 +117,18 @@ jobs:
         path: qt6.tar.xz
     - run: |
         kill_by_name () {
+          echo "killing $1"
           pids="$(pgrep "$1")"
           echo "Found the following $1 instances"
           while read -r pid; do
             echo "send sigint to $pid"
-            kill -SIGINT "$pid" || echo "Failed to kill or wait for $pid"
+            kill -SIGINT "$pid" || echo "Failed to kill $pid"
           done <<< "$pids"
         }
         wait_by_name () {
-          pids="$(pgrep "$1")"
-          echo "Found the following $1 instances"
-          while read -r pid; do
-            echo "send sigint to $pid"
-            lsof -p "$pid" +r 1 | awk '/^=/ { if (T++ >= 120) { exit 1 } }' && echo "$pid has exited"
+          echo "waiting for $1 to exit"
+          while true; do
+            pids="$(pgrep "$1")" && echo "Still waiting for $1 $pids" && sleep 1 || return 0
           done <<< "$pids"
         }
         kill_by_name make || :
