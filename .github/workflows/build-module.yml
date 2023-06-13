@@ -116,16 +116,26 @@ jobs:
         name: ${{ inputs.ArtifactSource || inputs.CacheSource }}-${{ inputs.module }}
         path: qt6.tar.xz
     - run: |
-        kill_and_wait () {
+        kill_by_name () {
           pids="$(pgrep "$1")"
           echo "Found the following $1 instances"
           while read -r pid; do
             echo "send sigint to $pid"
-            kill -SIGINT "$pid" && lsof -p "$pid" +r 1 | awk '/^=/ { if (T++ >= 120) { exit 1 } }' && echo "$pid has exited" || echo "Failed to kill or wait for $pid"
+            kill -SIGINT "$pid" || echo "Failed to kill or wait for $pid"
           done <<< "$pids"
         }
-        kill_and_wait make
-        kill_and_wait ninja
+        wait_by_name () {
+          pids="$(pgrep "$1")"
+          echo "Found the following $1 instances"
+          while read -r pid; do
+            echo "send sigint to $pid"
+            lsof -p "$pid" +r 1 | awk '/^=/ { if (T++ >= 120) { exit 1 } }' && echo "$pid has exited"
+          done <<< "$pids"
+        }
+        kill_by_name make
+        kill_by_name ninja
+        wait_by_name make
+        wait_by_name ninja
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
     - uses: actions/github-script@v4
       with:
