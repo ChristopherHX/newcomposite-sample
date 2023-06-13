@@ -132,10 +132,10 @@ jobs:
             lsof -p "$pid" +r 1 | awk '/^=/ { if (T++ >= 120) { exit 1 } }' && echo "$pid has exited"
           done <<< "$pids"
         }
-        kill_by_name make
-        kill_by_name ninja
-        wait_by_name make
-        wait_by_name ninja
+        kill_by_name make || :
+        kill_by_name ninja || :
+        wait_by_name make || :
+        wait_by_name ninja || :
       if: ${{ !(steps.build1.outcome == 'success' || steps.build2.outcome == 'success') }}
     - uses: actions/github-script@v4
       with:
