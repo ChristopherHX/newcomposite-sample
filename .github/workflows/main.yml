@@ -1,9 +1,0 @@
-on:
-- push
-- workflow_dispatch
-jobs:
-  call_reqired_secret_workflow:
-    uses: ./.github/workflows/required_secret.yml
-    with:
-      ENVIRONMENT_NAME: tmp
-    secrets: inherit
