@@ -19,33 +19,42 @@ jobs:
   dump:
     needs: prep
     if: needs.prep.outputs.OUT == inputs.MATRIX
-    runs-on: ubuntu-latest
-    steps:
-    - name: Dump inputs.MATRIX
-      run: ${{ inputs.MATRIX }}
-      shell: cat {0}
-    - name: Dump inputs.MATRIX
-      run: ${{ toJson(needs) }}
-      shell: cat {0}
+    uses: ./.github/workflows/build.yml
+    with:
+      MATRIX: ${{ inputs.MATRIX }}
+    # runs-on: ubuntu-latest
+    # steps:
+    # - name: Dump inputs.MATRIX
+    #   run: ${{ inputs.MATRIX }}
+    #   shell: cat {0}
+    # - name: Dump inputs.MATRIX
+    #   run: ${{ toJson(needs) }}
+    #   shell: cat {0}
   dump2:
     needs: prep
     if: needs.prep.outputs.OUT != inputs.MATRIX
-    runs-on: ubuntu-latest
-    steps:
-    - name: Dump inputs.MATRIX
-      run: ${{ inputs.MATRIX }}
-      shell: cat {0}
-    - name: Dump inputs.MATRIX
-      run: ${{ toJson(needs) }}
-      shell: cat {0}
+    uses: ./.github/workflows/build.yml
+    with:
+      MATRIX: ${{ inputs.MATRIX }}
+    # runs-on: ubuntu-latest
+    # steps:
+    # - name: Dump inputs.MATRIX
+    #   run: ${{ inputs.MATRIX }}
+    #   shell: cat {0}
+    # - name: Dump inputs.MATRIX
+    #   run: ${{ toJson(needs) }}
+    #   shell: cat {0}
   dump3:
     needs: prep
     if: needs.prep.outputs.OUT != 'null'
-    runs-on: ubuntu-latest
-    steps:
-    - name: Dump inputs.MATRIX
-      run: ${{ inputs.MATRIX }}
-      shell: cat {0}
-    - name: Dump inputs.MATRIX
-      run: ${{ toJson(needs) }}
-      shell: cat {0}
+    uses: ./.github/workflows/build.yml
+    with:
+      MATRIX: ${{ inputs.MATRIX }}
+    # runs-on: ubuntu-latest
+    # steps:
+    # - name: Dump inputs.MATRIX
+    #   run: ${{ inputs.MATRIX }}
+    #   shell: cat {0}
+    # - name: Dump inputs.MATRIX
+    #   run: ${{ toJson(needs) }}
+    #   shell: cat {0}
