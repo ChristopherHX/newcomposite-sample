@@ -1,9 +1,19 @@
 on:
-- push
-- workflow_dispatch
+  push:
 jobs:
-  call_reqired_secret_workflow:
-    uses: ./.github/workflows/required_secret.yml
+  call_plain:
+    uses: ./.github/workflows/child.yml
     with:
-      ENVIRONMENT_NAME: tmp
-    secrets: inherit
+      MATRIX: ${{ toJson(matrix) }}
+  call_matrix:
+    uses: ./.github/workflows/child.yml
+    strategy:
+      matrix:
+        v:
+          - 0
+          - 1
+          - 2
+          - 3
+    with:
+      MATRIX: ${{ toJson(matrix) }}
+    

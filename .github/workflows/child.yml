@@ -1,0 +1,40 @@
+on:
+  workflow_call:
+    inputs:
+      MATRIX:
+        required: true
+        type: string
+jobs:
+  prep:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dump inputs.MATRIX
+      run: ${{ inputs.MATRIX }}
+      shell: cat {0}
+    - name: Dump inputs.MATRIX
+      run: ${{ toJson(needs) }}
+      shell: cat {0}
+    outputs:
+      OUT: ${{ inputs.MATRIX }}
+  dump:
+    needs: prep
+    if: needs.prep.outputs.OUT == inputs.MATRIX
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dump inputs.MATRIX
+      run: ${{ inputs.MATRIX }}
+      shell: cat {0}
+    - name: Dump inputs.MATRIX
+      run: ${{ toJson(needs) }}
+      shell: cat {0}
+  dump2:
+    needs: prep
+    if: needs.prep.outputs.OUT != inputs.MATRIX
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dump inputs.MATRIX
+      run: ${{ inputs.MATRIX }}
+      shell: cat {0}
+    - name: Dump inputs.MATRIX
+      run: ${{ toJson(needs) }}
+      shell: cat {0}
