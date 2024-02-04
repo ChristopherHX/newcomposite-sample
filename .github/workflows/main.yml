@@ -1,9 +1,8 @@
 on:
-- push
-- workflow_dispatch
+  push:
 jobs:
-  call_reqired_secret_workflow:
-    uses: ./.github/workflows/required_secret.yml
-    with:
-      ENVIRONMENT_NAME: tmp
-    secrets: inherit
+  macos-14:
+    runs-on: macos-14
+    steps:
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
