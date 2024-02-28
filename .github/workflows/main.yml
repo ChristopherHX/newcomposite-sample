@@ -1,8 +1,8 @@
 on:
   push:
 jobs:
-  macos-14:
-    runs-on: macos-14
+  ublatest:
+    runs-on: ubuntu-latest
     steps:
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
